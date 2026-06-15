@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 
-# --- BRANDING & UI SETUP ---
+# --- BRANDING & UI SETUP (ELITE EXECUTIVE SYSTEM) ---
 st.set_page_config(
     page_title="NexAtlas AI | Decision Intelligence System",
     page_icon="🏛️",
@@ -10,46 +10,56 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Custom Corporate CSS (Clean, Minimalist, No Clutter)
 st.markdown("""
     <style>
     .main { background-color: #0B0E14; }
     header { background-color: rgba(0,0,0,0) !important; }
+    
     h1, h2, h3, h4 { color: #58A6FF !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica; font-weight: 600; }
     p, span, label { color: #C9D1D9 !important; }
+    
     .hero-portal { background: linear-gradient(135deg, #161B22 0%, #0D1117 100%); padding: 40px; border-radius: 12px; border: 1px solid #30363D; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-    .verdict-box { background-color: #161B22; padding: 30px; border-radius: 12px; border: 1px solid #388BFD; margin-bottom: 25px; }
     .consensus-box { background-color: #1F241F; padding: 20px; border-radius: 8px; border-left: 5px solid #238636; margin-top: 15px; }
+    
     .agent-card-standby { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #21262D; border-top: 3px solid #8B949E; text-align: left; margin-bottom: 15px; }
     .agent-status-dot { height: 8px; width: 8px; background-color: #56D364; border-radius: 50%; display: inline-block; margin-right: 6px; }
     .slogan-banner { background-color: #0D1117; padding: 15px 25px; border-radius: 8px; border-left: 4px solid #D4BB6C; margin: 20px 0; }
+    
+    /* Perbaikan tampilan nama di atas chat agar rapi dan tidak terlalu besar */
+    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     </style>
 """, unsafe_allow_html=True)
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
-        {"role": "system", "avatar": "🏛️", "name": "NexAtlas Engine", "content": "Executive Boardroom initialized with 30+ years institutional wisdom. Awaiting diagnostic data or high-stakes crisis scenarios."}
+        {"role": "system", "avatar": "🏛️", "name": "NexAtlas Core Engine", "content": "Executive Boardroom activated. Strategic data vaults loaded. Ready for predictive governance simulation."}
     ]
 
+# Header Utama Platform
 st.title("🏛️ NexAtlas AI")
 st.markdown("<p style='font-size: 16px; color: #8B949E !important;'>Enterprise Digital Twin & Decision Intelligence Ecosystem</p>", unsafe_allow_html=True)
 st.divider()
 
-# --- SIDEBAR CONTROL CENTER ---
-st.sidebar.header("⚙️ Control Center")
-st.sidebar.subheader("📥 Ingest Data")
-uploaded_file = st.sidebar.file_uploader("Upload Enterprise Data (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
+# --- SIDEBAR CONTROL CENTER (REBRANDING BAHASA KONSULTAN) ---
+st.sidebar.header("⚙️ Boardroom Configuration")
+
+# Mengubah "Ingest Data" menjadi istilah korporat yang elegan
+st.sidebar.subheader("📥 Strategic Data Loading")
+uploaded_file = st.sidebar.file_uploader("Upload Diagnostic Dataset (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
 
 if uploaded_file is not None:
-    st.sidebar.success(f"✅ Context Loaded: {uploaded_file.name}")
+    st.sidebar.success(f"✅ Context Synced: {uploaded_file.name}")
     file_status = f"Context Source: **{uploaded_file.name}**"
 else:
     file_status = "Context Source: Regional Strategic Supply Chain Dataset."
 
-st.sidebar.subheader("🔮 Scenario Injection")
-scenario = st.sidebar.text_area("Specify Core Objective:", 
-    "Analyze why PT Maju Bersama Indonesia revenue declined 15% and simulate an executive boardroom session.")
+# Mengubah "Scenario Injection" menjadi rumusan agenda dewan direksi
+st.sidebar.subheader("🔮 Define Strategic Agenda")
+scenario = st.sidebar.text_area("Core Objective Narrative:", 
+    "Analyze why PT Maju Bersama Indonesia revenue declined 15% and simulate an executive boardroom session covering strategic positioning.")
 
-initiate_sim = st.sidebar.button("Initiate Digital Twin Simulation")
+initiate_sim = st.sidebar.button("Initiate Boardroom Simulation")
 
 # --- MAIN WORKSPACE LOGIC ---
 if initiate_sim or uploaded_file is not None or len(st.session_state.chat_history) > 1:
@@ -67,60 +77,58 @@ if initiate_sim or uploaded_file is not None or len(st.session_state.chat_histor
     st.markdown("### 💬 Live Multi-Agent Boardroom Debate & Simulation")
     st.write("Jajaran Advisor Utama (25+ Tahun Pengalaman Industri) sedang membedah anomali sistem Anda:")
 
+    # Render Chat History (Pembersihan Render Avatar & Nama Agar Tidak Dobel/Typo)
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"], avatar=msg["avatar"]):
-            st.markdown(f"### {msg['name']}")
+            st.markdown(f"<div class='chat-agent-name'>{msg['name']}</div>", unsafe_allow_html=True)
             st.write(msg["content"])
             if "divider" in msg:
                 st.divider()
 
+    # Chat Input Box
     if user_query := st.chat_input("Tantang analisis dewan direksi senior di sini..."):
-        st.session_state.chat_history.append({"role": "user", "avatar": "👤", "name": "Executive (You)", "content": user_query})
+        # Mengubah identitas default dari "Executive (You)" menjadi "Senior Policy & Data Analyst"
+        st.session_state.chat_history.append({"role": "user", "avatar": "👤", "name": "Senior Policy & Data Analyst (You)", "content": user_query})
         
         with st.spinner("Jajaran Executive Partner sedang melakukan konvergensi strategi..."):
             time.sleep(1.5)
             query_lower = user_query.lower()
             
-            # --- DETEKSI SKENARIO SENTIMEN / VIRAL / JALAN RUSAK / DATA SOSIAL ---
             is_sentiment_query = "sentimen" in query_lower or "viral" in query_lower or "sosial" in query_lower or "jalan" in query_lower or "komplain" in query_lower or "masyarakat" in query_lower
-            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower
+            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower or ("maju bersama" in scenario.lower())
             
             if is_sentiment_query:
-                # CEO Agent
                 st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                    "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
                     "content": """Sentimen publik yang Anda unggah dalam file CSV tersebut adalah **leading indicator atas risiko operasional makro**. Di era digitalisasi ini, jika narasi viral mengenai isu sosial, pembangunan macet, atau infrastruktur jalan rusak di daerah operasional (seperti koridor Lampung) menyentuh angka sentimen negatif di atas 70%, itu bukan sekadar riak kecil di media sosial.
 
 Itu adalah alarm keras bahwa legitimasi operasional kita terancam. Ketika persepsi publik hancur, koordinasi regulasi dengan birokrasi lokal akan otomatis mengeras dan biayanya sangat mahal."""
                 })
                 
-                # CFO Agent
                 st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
-                    "content": """Saya melihat korelasi finansial langsung dari grafik sentimen negatif ini. Ambil contoh isu konkret: keluhan masif tentang infrastruktur jalan rusak. Keluhan publik ini bertransformasi menjadi **real financial drag** pada neraca kas kita. 
+                    "role": "assistant", "avatar": "💰", "name": "CFO Agent (Veteran Risk & Financial Allocator)",
+                    "content": """Saya melihat korelasi finansial langsung dari grafik sentimen negatif ini. Ambil contoh isu konkret: keluhan masif tentang infrastruktur jalan rusak. Keluhan publik ini bertransformasi menjadi *real financial drag* pada neraca kas kita. 
 
 Kendaraan logistik kita mengalami depresiasi aset 20% lebih cepat, konsumsi bahan bakar membengkak, dan *delivery time variance* naik tak terkendali. Sentimen negatif adalah cerminan langsung dari inefisiensi biaya operasional riil yang belum tercatat di sistem akuntansi internal Anda."""
                 })
                 
-                # Senior Data Analyst
+                # Perbaikan Typo fatal "menointegasikan" -> "mengintegrasikan"
                 st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
-                    "content": """Analisis teks (*Text Analytics*) pada dataset `combine (1).csv` mengonfirmasi adanya polarisasi kluster keluhan yang sangat pekat. Masalahnya, sistem monitoring Anda saat ini buta terhadap data tidak terstruktur (*unstructured data*) seperti ini. 
+                    "role": "assistant", "avatar": "📊", "name": "Senior Data Analyst (Principal Decision Intelligence)",
+                    "content": """Analisis teks (*Text Analytics*) pada dataset mengonfirmasi adanya polarisasi kluster keluhan yang sangat pekat. Masalahnya, sistem monitoring Anda saat ini buta terhadap data tidak terstruktur (*unstructured data*) seperti ini. 
 
-Jika laporan performa internal mengklaim target infrastruktur beres 90%, sementara *public sentiment registry* mencatat keluhan 80% negatif, artinya terjadi **validasi asimetris**. Metrik internal Anda tidak membumi. Kita wajib mengintegrasikan indeks kepuasan riil ini ke dalam penentuan prioritas alokasi coverage lahan."""
+Jika laporan performa internal mengklaim target infrastruktur beres 90%, sementara *public sentiment registry* mencatat keluhan 80% negatif, artinya terjadi validasi asimetris. Metrik internal Anda tidak membumi. Kita wajib **mengintegrasikan** indeks kepuasan riil ini ke dalam penentuan prioritas alokasi coverage lahan."""
                 })
                 
-                # CTO & Pipeline Engineer
                 st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
+                    "role": "assistant", "avatar": "🏗", "name": "CTO & Pipeline Architect (Enterprise Tech Fellow)",
                     "content": """Untuk menangkap pergerakan sentimen yang dinamis ini, mengandalkan unggahan file CSV manual seperti ini sangat tidak efisien. Kita butuh solusi automasi di level hulu.
 
-Rekomendasi arsitektur saya: Kita harus mendeploy sebuah **NLP Ingestion Pipeline** menggunakan model bahasa lokal yang dituning (seperti IndoBERT/RoBERTa) untuk mem-parsing dialek dan slang lokal secara akurat. Pipeline ini harus dikaitkan langsung ke **Kafka Event Broker** yang sudah kita bahas, sehingga setiap ada lonjakan komplain viral di lapangan, sistem kecerdasan **Hybrid LSTM** kita bisa langsung menyesuaikan prediksi risiko distribusi logistik secara *near real-time* (< 5 detik)."""
+Rekomendasi arsitektur saya: Kita harus mendeploy sebuah *Streaming NLP Telemetry Pipeline* menggunakan model bahasa lokal yang dituning (seperti IndoBERT/RoBERTa) untuk mem-parsing dialek dan slang lokal secara akurat. Pipeline ini harus dikaitkan langsung ke Kafka Event Broker, sehingga setiap ada lonjakan komplain viral di lapangan, sistem kecerdasan Hybrid LSTM kita bisa langsung menyesuaikan prediksi risiko distribusi logistik secara *near real-time* (< 5 detik)."""
                 })
                 
-                # Consensus Summary
                 st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🎯", "name": "🎯 NexAtlas Strategic Consensus Verdict",
+                    "role": "assistant", "avatar": "🎯", "name": "NexAtlas Strategic Consensus Verdict",
                     "content": """
 ### 📋 Public Sentiment Crisis Mitigation Matrix
 
@@ -132,25 +140,22 @@ Rekomendasi arsitektur saya: Kita harus mendeploy sebuah **NLP Ingestion Pipelin
 """, "divider": True
                 })
 
-            # --- CONTEXT DETEKSI MAJU BERSAMA ---
             elif is_maju_bersama_context:
                 if "dasar" in query_lower or "kenapa" in query_lower or "why" in query_lower or "alasan" in query_lower:
                     st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
+                        "role": "assistant", "avatar": "📊", "name": "Senior Data Analyst (Principal Decision Intelligence)",
                         "content": """Dasar empirisnya sangat kokoh: audit internal Digital Twin kami menemukan adanya **diskrepansi fatal sebesar 31%** pada sektor komoditas sekunder. Jangkauan riil (*Actual Coverage*) di lapangan hanya menyentuh **69%**, sementara target di atas kertas diklaim sempurna. Selisih data gaib inilah pemicunya."""
                     })
                 elif "strategi" in query_lower or "solusi" in query_lower or "langkah" in query_lower or "awal" in query_lower:
                     st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                        "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
                         "content": """Strategi awal PT Maju Bersama terlalu berfokus pada agresivitas ekspansi hilir tanpa memperkuat fundamen *Data Supply Chain* di hulu. Langkah pemulihan instan kita adalah mengalihkan anggaran modal kerja untuk menerapkan **Skenario B (Kafka Pipeline + Hybrid LSTM)** guna menyelamatkan margin laba sebesar **Rp 950 Juta**."""
                     })
                 else:
                     st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                        "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
                         "content": """Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** adalah krisis eksekusi struktural akibat data birokrasi pelaporan yang usang."""
                     })
-            
-            # --- DEFAULT FALLBACK ---
             else:
                 st.session_state.chat_history.append({
                     "role": "assistant", "avatar": "🏛️", "name": "NexAtlas Consensus", 
@@ -172,7 +177,7 @@ else:
             <i style='color:#C9D1D9;'>\"Power BI tells you <b>what</b> happened. NexAtlas tells you <b>why</b> it happened, what the risks are, what needs to be done, and <b>what will happen</b> if decision A or B is taken.\"</i>
         </div>
         <p style='font-size:14px; margin-bottom:0; color:#58A6FF !important;'>
-            💡 <b>Action Required:</b> Silakan unggah file rahasia perusahaan Anda di panel kiri atau langsung klik tombol <b>"Initiate Digital Twin Simulation"</b> untuk mengaktifkan ruang rapat dewan direksi.
+            💡 <b>Action Required:</b> Silakan lakukan pengunggahan berkas strategis di panel kiri atau tentukan agenda draf objektif Anda, lalu klik tombol <b>"Initiate Boardroom Simulation"</b>.
         </p>
     </div>
     """, unsafe_allow_html=True)
