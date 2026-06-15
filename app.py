@@ -78,55 +78,59 @@ if initiate_sim or uploaded_file is not None or len(st.session_state.chat_histor
         st.session_state.chat_history.append({"role": "user", "avatar": "👤", "name": "Executive (You)", "content": user_query})
         
         with st.spinner("Jajaran Executive Partner sedang melakukan konvergensi strategi..."):
-            time.sleep(2)
+            time.sleep(1.5)
             query_lower = user_query.lower()
             
-            if "maju bersama" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower:
+            # --- CONTEXT DETECTION (PT MAJU BERSAMA / REVENUE CRISIS) ---
+            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower or ("maju bersama" in scenario.lower())
+            
+            if is_maju_bersama_context:
                 
-                # CEO Agent - The Master Strategist
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
-                    "content": """Pernyataan bahwa pasar sedang lesu adalah alasan klasik manajemen untuk menutupi **kebutaan operasional**. Penurunan 15% pada PT Maju Bersama Indonesia adalah indikator hulu bahwa kita kehilangan kontrol atas rantai pasok wilayah. 
+                # JIKA USER MENANYAKAN "DASARNYA APA?" / "KENAPA?"
+                if "dasar" in query_lower or "kenapa" in query_lower or "why" in query_lower or "alasan" in query_lower:
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
+                        "content": """Dasar empirisnya sangat kokoh: audit internal Digital Twin kami menemukan adanya **diskrepansi fatal sebesar 31%** pada sektor komoditas sekunder. Laporan Power BI bulanan manajemen mencatat efisiensi 100% karena dihitung dari *Rencana Target Lahan* (data di atas kertas). 
 
-Selama 25 tahun saya memimpin transformasi, polanya selalu sama: eksekutif terlalu silau dengan laporan pertumbuhan makro di atas kertas, tapi menutup mata terhadap *data asymmetry* di tingkat akar rumput. Kita tidak sedang kekurangan data; kita sedang menderita **kelumpuhan keputusan** akibat birokrasi pelaporan kuantitatif yang lamban."""
-                })
+Namun, jangkauan riil (*Actual Coverage*) di lapangan hanya menyentuh **69%**. Selisih 31% data gaib inilah yang membuat estimasi suplai kita buta dan memicu penumpukan *overhead* gudang yang memakan pendapatan."""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
+                        "content": """Menambahkan dari kacamata arsitektur teknis, dasarnya adalah **data stagnation**. Delay 14 hari dalam sinkronisasi SQL database berarti keputusan taktis manajemen hari ini didasarkan pada kondisi logistik dua minggu lalu. Berjalan di pasar volatil dengan data kedaluwarsa adalah alasan utama mengapa kebocoran Rp 1.2 Miliar ini terjadi tanpa terdeteksi sistem pemantauan lama Anda."""
+                    })
                 
-                # CFO Agent - The Ruthless Capital Allocator
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
-                    "content": """Mari kita bicara angka riil, bukan justifikasi naratif. Bocor **Rp 1.2 Miliar per tahun** itu adalah *bleeding* modal kerja yang sangat tidak bisa ditoleransi. Masalah fundamentalnya bukan di tim penjualan, melainkan pada **operational drag** di gudang regional logistik. 
-
-Kita mengunci likuiditas perusahaan untuk memproduksi komoditas berdasarkan *Rencana Target Lahan*—sebuah metrik fiktif warisan birokrasi lama yang tidak mencerminkan daya serap pasar riil. Akibatnya? *Inventory holding cost* kita membengkak dan memakan margin laba bersih. Berhenti mendanai intuisi; setiap rupiah ekspansi harus dikunci oleh kepastian serapan data lapangan."""
-                })
+                # JIKA USER MENANYAKAN "STRATEGI AWALNYA APA?" / "SOLUSI?"
+                elif "strategi" in query_lower or "solusi" in query_lower or "langkah" in query_lower or "awal" in query_lower:
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                        "content": """Strategi awal PT Maju Bersama terlalu berfokus pada **agresivitas ekspansi hilir** tanpa memperkuat fundamen *Data Supply Chain* di hulu. Manajemen memacu tim penjualan untuk mengejar omset, namun rantai input data kuantitatif dari enumerator lapangan dibiarkan manual dan lamban. Strategi awal yang buta koordinasi inilah yang menciptakan *blind spot* operasional."""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
+                        "content": """Benar, strategi spekulatif itu harus segera kita akhiri. Langkah pemulihan instan kita adalah mematikan sistem pelaporan *batch* kuno dan mengalihkan anggaran modal kerja untuk menerapkan **Skenario B (Kafka Pipeline + Hybrid LSTM)**. Mitigasi risiko ini diproyeksikan langsung menyelamatkan margin laba sebesar **Rp 950 Juta pada kuartal depan**."""
+                    })
                 
-                # Senior Data Analyst - The Skeptical Methodologist
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
-                    "content": """Saya harus bersikap sangat keras pada metode visualisasi yang Anda gunakan saat ini. Tim visualisasi Anda masih terjebak pada paradigma visual kosmetik Power BI: menyajikan grafik indah tapi menyesatkan. Dashboard Anda mengukur rasio performa komoditas dari *Rencana Target Coverage Lahan*. Itu adalah ilusi optik korporat! 
-
-Kenyataan di lapangan menunjukkan jangkauan data aktual untuk Ubi Kayu drop hingga **69%**. Manajemen mengira mereka aman karena target di atas kertas terpenuhi, padahal kenyataannya rantai pasok kita sedang mengalami kekosongan pasokan secara riil. Mulai hari ini, **rumus perhitungan wajib dibalik secara radikal: ukur efisiensi murni dari Total Actual Coverage**, bukan dari rencana di atas kertas. Jika metrik dasarnya salah, model AI tercanggih pun hanya akan menghasilkan keputusan salah yang terotomatisasi."""
-                })
-                
-                # CTO & Pipeline Engineer - The Deep-Tech Pragmatist
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
-                    "content": """Dari sisi infrastruktur, arsitektur data Anda saat ini adalah peninggalan dekade lalu yang dipaksakan hidup. **Latensi sinkronisasi data 14 hari** itu adalah bencana untuk bisnis modern. Anda tidak bisa membangun sistem deteksi anomali yang presisi jika database Anda masih mengandalkan sistem *SQL Batch Processing* tradisional yang kaku.
-
-Rekomendasi teknis saya tidak bisa ditawar: bongkar *pipeline* lama, migrasikan ke arsitektur **Cloud Hybrid**, dan pasang **Event Broker berbasis Apache Kafka** untuk menangani *streaming data telemetry* langsung dari lapangan. Infrastruktur ini yang akan memotong *delay* dari 14 hari menjadi **di bawah 5 detik (Near Real-Time)**. Data dengan latensi super rendah inilah yang krusial untuk menyuplai algoritma **Hybrid LSTM** kita agar mampu memprediksi volatilitas harga dan volume panen secara akurat sebelum kerugian finansial terjadi."""
-                })
-                
-                # IT Auditor Agent - The Governance Gatekeeper
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🔐", "name": "🔐 IT Auditor Agent (Principal Risk & Governance)",
-                    "content": """Teknologi hebat tanpa tata kelola adalah resep instan menuju kegagalan audit. Kepatuhan integrasi data kita berada di angka **65% (Level 3 - Defined)**, yang artinya standardisasi input data dari para enumerator di lapangan sangat rentan terhadap *human error* dan manipulasi data kuantitatif. 
-
-Sebelum CTO menerapkan model prediksi canggihnya, kita wajib memberlakukan kerangka kerja *Data Governance* yang ketat bulan ini. Setiap data masuk harus melewati validasi aturan otomatis di tingkat hulu (*edge logging*) untuk menjamin *Single Source of Truth* yang bersih dan sah secara hukum korporasi."""
-                })
-                
-                # Consensus Summary
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🎯", "name": "🎯 NexAtlas Strategic Consensus Verdict",
-                    "content": """
+                # RESPONS DEFAULT MULTI-AGENT JIKA PERTANYAAN PERTAMA KALI ATAU UMUM
+                else:
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                        "content": """Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** adalah krisis eksekusi struktural. Kita terlalu lambat merespons anomali pasar karena tata kelola informasi kita menderita kelumpuhan keputusan akibat data birokrasi pelaporan yang usang."""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
+                        "content": """Kebocoran ini setara dengan **kerugian finansial Rp 1.2 Miliar/tahun**. Kita memproduksi barang berdasarkan target rencana, padahal permintaan pasar meleset jauh. Ini inefisiensi modal kerja yang sangat fatal."""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
+                        "content": """Biang keroknya ada pada bias rumus visualisasi dashboard lama Anda yang menghitung performa dari *Rencana Target Lahan*. Lapangan mencatat jangkauan aktual (*Actual Coverage*) komoditas drop ke **69%**. Balik rumus kalkulasinya ke basis jangkauan riil sekarang juga!"""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
+                        "content": """Latensi sinkronisasi data 14 hari adalah pemicunya. Solusi mutlak: ganti pipa data lama dengan **Event Broker berbasis Apache Kafka** terintegrasi arsitektur **Cloud Hybrid** untuk menyuplai model forecasting **Hybrid LSTM** secara real-time (< 5 detik)."""
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant", "avatar": "🎯", "name": "🎯 NexAtlas Strategic Consensus Verdict",
+                        "content": """
 ### 🏛️ Executive Transformation Blueprint (Big 4 Advisory Standard)
 
 | Pilar Strategis | Rekomendasi Taktis Intervensi Senior | Indikator Dampak Finansial | Target Ketat |
@@ -134,15 +138,12 @@ Sebelum CTO menerapkan model prediksi canggihnya, kita wajib memberlakukan keran
 | **Metrik Analytics** | Koreksi total kalkulasi visualisasi; wajib berbasis **Total Actual Coverage**. | Menghilangkan bias prediksi manajemen | Minggu 1-2 |
 | **Data Engine** | Deploy arsitektur Cloud Hybrid & Event Broker (Kafka Pipeline). | Memangkas latensi data dari 14 hari ke < 5 detik | Bulan 1 |
 | **Decision AI** | Aktivasi pemodelan prediktif berbasis arsitektur **Hybrid LSTM / CNN-LSTM**. | Memitigasi operational loss & optimasi gudang | Bulan 2-3 |
-
-**🔮 Hasil Simulasi Prediktif (What-If Simulation):**
-Jika dewan direksi memilih **Skenario B (Implementasi IoT + Real-time Streaming Pipeline)**, sistem memproyeksikan **pemulihan margin pendapatan sebesar Rp 950 Juta pada kuartal berikutnya** serta meningkatkan kecepatan respons kebijakan C-Level sebesar **35%**.""",
-                    "divider": True
-                })
+""", "divider": True
+                    })
             else:
                 st.session_state.chat_history.append({
                     "role": "assistant", "avatar": "🏛️", "name": "NexAtlas Consensus", 
-                    "content": f"Pertanyaan Anda mengenai '{user_query}' telah dievaluasi oleh dewan penasihat senior. Prinsip dasar kami: Jangan selesaikan masalah struktural dengan perbaikan kosmetik di hilir. Perbaiki tata kelola validasi data aktualnya terlebih dahulu."
+                    "content": f"Pertanyaan mengenai '{user_query}' telah diproses. Seluruh jajaran direksi menyarankan untuk mengunci parameter kalkulasi operasional berdasarkan kondisi data aktual lapangan."
                 })
         st.rerun()
 
