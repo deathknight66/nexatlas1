@@ -58,7 +58,6 @@ if initiate_sim:
 # --- SCREEN CONTROLLER: PRE-FLIGHT VS EXECUTIVE WORKSPACE ---
 if not st.session_state.simulation_active:
     
-    # LANDING PORTAL WITH PROFESSIONALLY REFINED SLOGAN
     st.markdown("""
     <div class="hero-portal">
         <h2 style='margin-top:0;'>🏛️ NexAtlas Virtual Strategy Room</h2>
@@ -108,8 +107,6 @@ if not st.session_state.simulation_active:
 
 else:
     # --- ACTIVE WORKSPACE: MULTI-MODE ADVISORY LAYOUT ---
-    
-    # VIEW MODE SWITCHER (THE ENTERPRISE PILL SELECTION)
     view_mode = st.radio(
         "Select Boardroom View Perspective:",
         ["🏢 Executive Mode (C-Level Verdict)", "🔬 Analyst Mode (Evidence & Reasoning Chain)"],
@@ -122,25 +119,27 @@ else:
     # ==========================================
     if "Executive Mode" in view_mode:
         
-        # 1. THE RADICAL EXECUTIVE VERDICT (THE 30-SECOND TOP-LEVEL SUMMARY)
-        st.markdown('<div class="verdict-box">', unsafe_allow_html=True)
-        st.subheader("🧠 NexAtlas Executive Verdict")
+        # FIX: Menggabungkan seluruh struktur konten ke dalam SATU blok HTML utuh untuk menghapus kotak kosong gaib
         st.markdown("""
-        **Strategic Diagnosis:**
-        Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** didorong oleh tiga kegagalan struktural yang saling bertumpu:
-        * Metodologi pengukuran KPI visualisasi yang menyesatkan, menyembunyikan **31% data asimetris** di lapangan.
-        * Latensi sinkronisasi data operasional hulu-hilir sebesar **14 hari** (*Batch Processing* usang).
-        * Beban *inventory holding cost* gudang regional membengkak akibat peramalan produksi yang buta dari realitas pasar.
-
-        **Recommended Actions:**
-        1. **Koreksi Metrik Dasar:** Ganti metrik proyeksi rencana lahan menjadi kalkulasi murni berbasis **Total Actual Ground Coverage**.
-        2. **Modernisasi Arsitektur:** Migrasikan jalur data logistik menuju pipa *streaming architecture* (Kafka) secara instan.
-        3. **Deploy Forecasting Model:** Integrasikan analitik prediktif berbasis pemodelan **Hybrid LSTM** untuk mengunci efisiensi gudang.
-
-        **Expected Impact & Return:**
-        * 🎯 **+35%** Data Ground Accuracy | ⚡ **-90%** Decision Latency | 💰 **Estimated ROI:** 18 Months
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
+        <div class="verdict-box">
+            <h3 style="color: #58A6FF !important; margin-top:0;">🧠 NexAtlas Executive Verdict</h3>
+            <p><b>Strategic Diagnosis:</b><br>
+            Penurunan pendapatan <b>15% pada PT Maju Bersama Indonesia</b> didorong oleh tiga kegagalan struktural yang saling bertumpu:</p>
+            <ul>
+                <li>Metodologi pengukuran KPI visualisasi yang menyesatkan, menyembunyikan <b>31% data asimetris</b> di lapangan.</li>
+                <li>Latensi sinkronisasi data operasional hulu-hilir sebesar <b>14 hari</b> (<i>Batch Processing</i> usang).</li>
+                <li>Beban <i>inventory holding cost</i> gudang regional membengkak akibat peramalan produksi yang buta dari realitas pasar.</li>
+            </ul>
+            <p><b>Recommended Actions:</b></p>
+            <ol>
+                <li><b>Koreksi Metrik Dasar:</b> Ganti metrik proyeksi rencana lahan menjadi kalkulasi murni berbasis <b>Total Actual Ground Coverage</b>.</li>
+                <li><b>Modernisasi Arsitektur:</b> Migrasikan jalur data logistik menuju pipa <i>streaming architecture</i> (Kafka) secara instan.</li>
+                <li><b>Deploy Forecasting Model:</b> Integrasikan analitik prediktif berbasis pemodelan <b>Hybrid LSTM</b> untuk mengunci efisiensi gudang.</li>
+            </ol>
+            <p style="margin-bottom:0;"><b>Expected Impact & Return:</b><br>
+            🎯 <b>+35%</b> Data Ground Accuracy | ⚡ <b>-90%</b> Decision Latency | 💰 <b>Estimated ROI:</b> 18 Months</p>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 2. STRATEGIC RISK MATRIX
         st.markdown("### 🛡️ Strategic Risk Assessment")
@@ -182,8 +181,6 @@ else:
     # 🔬 OPTION 2: ANALYST MODE (AUDITOR/DATA VIEW)
     # ==========================================
     else:
-        
-        # 1. CONSENSUS EVOLUTION TIMELINE (THE MIROFISH STEPPER)
         st.markdown("### 📉 Multi-Agent Consensus Evolution Timeline")
         st.write("Visualisasi pergeseran argumen dewan pakar AI dari perdebatan buntu menuju konsensus strategis:")
         
@@ -201,36 +198,30 @@ else:
 
         st.divider()
 
-        # 2. THE COLLAPSIBLE DEBATE LAYER WITH HIGH FIDELITY EVIDENCE MATRIX
         st.markdown("### 💬 Virtual Executive Deliberation Auditing")
         st.write("Bongkar transkrip perdebatan taktis untuk mengaudit dasar logika keputusan AI:")
 
         with st.expander("▼ View Executive Discussion Transcripts (30 Rounds of Deliberation)", expanded=True):
-            
-            # CEO
-            st.markdown("""<div class='agent-bubble_premium'>
-                <div class='chat-agent-name'>CEO Agent (Corporate Strategy Partner)</div>
+            st.markdown("""<div class='agent-bubble-premium'>
+                <div class='chat-agent-name'>CEO Agent (Senior Corporate Advisor)</div>
                 <div style='margin-bottom:8px;'><span class='evidence-badge'>Confidence: 88%</span> | <span class='evidence-badge'>Source: Corporate KPI Brief Q3</span></div>
                 <p>Penurunan pendapatan 15% ini adalah indikator hulu bahwa manajemen menderita kelumpuhan keputusan akibat birokrasi pelaporan kuantitatif yang lamban.</p>
             </div>""", unsafe_allow_html=True)
             
-            # CFO
-            st.markdown("""<div class='agent-bubble_premium'>
+            st.markdown("""<div class='agent-bubble-premium'>
                 <div class='chat-agent-name'>CFO Agent (Veteran Risk & Financial Allocator)</div>
                 <div style='margin-bottom:8px;'><span class='evidence-badge'>Confidence: 94%</span> | <span class='evidence-badge'>Source: Ledger Inefficiency Audit; Inventory Turnover Log</span></div>
                 <p>Bocor Rp 1.2 Miliar/tahun terjadi karena operational drag di gudang regional. Kita mengunci modal kerja memproduksi komoditas berdasarkan Rencana Target, bukan serapan pasar riil.</p>
             </div>""", unsafe_allow_html=True)
             
-            # CDO Counters CFO
-            st.markdown("""<div class='agent-bubble_premium'>
+            st.markdown("""<div class='agent-bubble-premium'>
                 <div class='chat-agent-name'>CDO Agent (Chief Data Officer Partner)</div>
                 <div class='conflict-tag'>🛑 CDO countered CFO Strategy (Reason: KPI calculation methodology is deeply biased)</div>
                 <div style='margin-bottom:8px;'><span class='evidence-badge'>Confidence: 91%</span> | <span class='evidence-badge'>Source: DAMA-DMBOK Quality Registry; Field actual telemetry</span></div>
                 <p>Jangan menyalahkan proyeksi gudang sebelum mengoreksi rumus dasarnya! Dashboard lama menghitung performa dari Rencana Target Lahan (data kertas). Faktanya, Total Actual Ground Coverage kita drop hingga 69%! Formula wajib dibalik total.</p>
             </div>""", unsafe_allow_html=True)
             
-            # CIO Counters CDO & CFO
-            st.markdown("""<div class='agent-bubble_premium'>
+            st.markdown("""<div class='agent-bubble-premium'>
                 <div class='chat-agent-name'>CIO Agent (Technology Transformation Fellow)</div>
                 <div class='conflict-tag'>🛑 CIO countered CDO & CFO Proposals (Reason: Infrastructure stack cannot support real-time math)</div>
                 <div style='margin-bottom:8px;'><span class='evidence-badge'>Confidence: 95%</span> | <span class='evidence-badge'>Source: TOGAF Architecture Mapping; SQL Log Replication Lag</span></div>
@@ -239,7 +230,6 @@ else:
 
         st.divider()
 
-        # 3. DATA & IT ASSESSMENT MATRIX (THE BIG 4 SCRUTINY)
         st.markdown("### 📊 Data & IT Capability Assessment")
         col_g1, col_g2 = st.columns(2)
         with col_g1:
