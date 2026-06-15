@@ -28,7 +28,7 @@ st.markdown("""
     .framework-badge { display: inline-block; background-color: #21262D; color: #58A6FF; padding: 4px 10px; border-radius: 4px; border: 1px solid #30363D; font-size: 12px; font-weight: bold; margin: 3px; }
     .evidence-badge { background-color: #21262D; color: #8B949E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-family: monospace; }
     
-    /* Executive Phase Milestones Modern Premium Styling (Anti-Kotak-Jelek) */
+    /* Executive Phase Milestones Modern Premium Styling */
     .milestone-card { background-color: #161B22; padding: 25px; border-radius: 10px; border: 1px solid #21262D; height: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     .status-pill { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
     
@@ -36,7 +36,14 @@ st.markdown("""
     .badge-process { background-color: rgba(212, 187, 108, 0.15); color: #d4bb6c; border: 1px solid rgba(212, 187, 108, 0.3); }
     .badge-pending { background-color: rgba(139, 148, 158, 0.15); color: #8b949e; border: 1px solid rgba(139, 148, 158, 0.3); }
     
-    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
+    /* System State Ingestion Badges */
+    .state-badge-demo { background-color: rgba(212, 187, 108, 0.1); color: #d4bb6c; border: 1px solid #7E6C38; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+    .state-badge-live { background-color: rgba(88, 166, 255, 0.1); color: #58A6FF; border: 1px solid #388BFD; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+    
+    /* Elegant Acknowledgement Footer Box */
+    .ack-card { background-color: #11151C; padding: 25px; border-radius: 8px; border: 1px solid #21262D; border-left: 4px solid #8B949E; margin-top: 20px; }
+    
+    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 2px; }
     .conflict-tag { color: #FF7B72; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
     .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     </style>
@@ -51,7 +58,15 @@ st.divider()
 
 # --- SIDEBAR EXECUTIVE CONTROL CENTER ---
 st.sidebar.header("⚙️ Simulation Settings")
+
+# INPUT 1: DATA LOADING
+st.sidebar.subheader("STEP 1: Upload Documents")
 uploaded_file = st.sidebar.file_uploader("Upload Diagnostic Dataset (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
+
+# INPUT 2: OBJECTIVE SCENARIO NARRATIVE
+st.sidebar.subheader("STEP 2: Define Strategic Agenda")
+default_scenario = "Analyze why PT Maju Bersama Indonesia revenue declined 15% and simulate an executive boardroom session covering strategic positioning."
+scenario = st.sidebar.text_area("Core Objective Narrative:", value=default_scenario)
 
 st.sidebar.subheader("Configure Engine")
 disc_rounds = st.sidebar.slider("Number of Discussion Rounds", min_value=5, max_value=50, value=34)
@@ -64,43 +79,80 @@ initiate_sim = st.sidebar.button("📊 Run Multi-Agent Simulation", use_containe
 if initiate_sim:
     st.session_state.simulation_active = True
 
+# --- DYNAMIC INGESTION EVALUATOR ---
+if uploaded_file is not None:
+    state_badge = '<span class="state-badge-live">🟢 CUSTOM ASSET GROUNDED</span>'
+    company_name = "Custom Enterprise Node"
+    industry_sector = "Extracted from Ingested Schema"
+    revenue_baseline = "Analyzing Ledger Boundaries..."
+    workforce = "Calculating Operational Nodes..."
+    crisis_vector = f"Processing context from file: {uploaded_file.name}"
+    strategic_priority = "Executing user-defined simulation metrics"
+else:
+    state_badge = '<span class="state-badge-demo">🔹 SANDBOX DEMO PREVIEW</span>'
+    company_name = "PT Maju Bersama Indonesia"
+    industry_sector = "Agriculture & Supply Chain Network"
+    revenue_baseline = "Rp 2.4 Trillion"
+    workforce = "5,200 Employees (Field & HQ)"
+    crisis_vector = "Revenue declined 15% in last 3 quarters"
+    strategic_priority = "Cost optimization & data modernization"
+
 # --- SCREEN CONTROLLER: PRE-FLIGHT VS EXECUTIVE WORKSPACE ---
 if not st.session_state.simulation_active:
     
+    # --- ENTERPRISE HERO PORTAL WITH DYNAMIC OVERVIEW INTEGRATION ---
     st.markdown("""
     <div class="hero-portal">
         <h2 style='margin-top:0;'>🏛️ NexAtlas Virtual Strategy Room</h2>
-        <div style="background-color: #0D1117; padding: 18px 25px; border-radius: 8px; border-left: 4px solid #D4BB6C; margin: 20px 0;">
-            <i style='color:#C9D1D9; font-size: 15px;'>\"Traditional dashboards explain what happened. NexAtlas simulates why it happened, evaluates risks, and recommends strategic actions based on AI executive deliberation.\"</i>
+        <p style='font-size:15px; color:#C9D1D9 !important; line-height:1.6;'>
+            NexAtlas AI is an AI-powered enterprise digital twin and advisory platform built upon the MiroFish architecture. 
+            It transforms a general-purpose social simulation engine into a corporate intelligence ecosystem where autonomous 
+            AI agents collaborate to analyze business strategies, data capabilities, IT governance, and digital transformation scenarios.
+        </p>
+        <div class="slogan-banner">
+            <b style='color:#D4BB6C;'>The Decision Intelligence Core:</b><br>
+            <i style='color:#A3A3A3;'>\"Traditional dashboards explain what happened. NexAtlas simulates why it happened, evaluates risks, and recommends strategic actions based on AI executive deliberation.\"</i>
         </div>
-        <p style='font-size:14px; margin-bottom:0; color:#8B949E !important;'>
-            Sistem orkestrasi dewan direksi virtual siap menganalisis dokumen strategis, menantang asumsi manajemen, dan memproyeksikan lintasan masa depan korporasi.
+        <p style='font-size:14px; margin-bottom:0; color:#58A6FF !important;'>
+            💡 <b>Action Required:</b> Silakan lakukan pengunggahan berkas strategis di panel kiri atau tentukan agenda draf objektif Anda, lalu klik tombol <b>"Run Multi-Agent Simulation"</b>.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     col_left, col_right = st.columns(2)
     with col_left:
-        st.markdown("### 🏢 Digital Twin Profile Context")
-        st.markdown("""
+        # 1. PROFILE CONTEXT CARD
+        st.markdown(f"### 🏢 Digital Twin Profile Context &nbsp;&nbsp; {state_badge}", unsafe_allow_html=True)
+        st.markdown(f"""
         <div class="profile-card">
             <table style="width:100%; border-collapse: collapse;">
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Enterprise Entity:</b></td><td>PT Maju Bersama Indonesia</td></tr>
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Industry Sector:</b></td><td>Agriculture & Supply Chain Network</td></tr>
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Annual Revenue Baseline:</b></td><td>Rp 2.4 Trillion</td></tr>
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Active Workforce:</b></td><td>5,200 Employees (Field & HQ)</td></tr>
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Current Crisis Vector:</b></td><td style="color:#FF7B72;">Revenue declined 15% in last 3 quarters</td></tr>
-                <tr><td style="color:#8B949E; padding:8px 0;"><b>Strategic Directive:</b></td><td style="color:#56D364;">Cost optimization & framework-driven modernization</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Enterprise Entity:</b></td><td style="font-weight:bold; color:#58A6FF;">{company_name}</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Industry Sector:</b></td><td>{industry_sector}</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Annual Revenue Baseline:</b></td><td>{revenue_baseline}</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Active Workforce:</b></td><td>{workforce}</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Current Crisis Vector:</b></td><td style="color:#FF7B72;">{crisis_vector}</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Strategic Directive:</b></td><td style="color:#56D364;">{strategic_priority}</td></tr>
             </table>
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("### 📐 Applied Frameworks Layer")
+        # 2. CORE ADVISORY DOMAINS & FRAMEWORKS
+        st.markdown("### 🚀 Core Advisory Domains & Frameworks")
+        st.markdown("""
+        <ul style="color:#C9D1D9; margin-left:15px; margin-bottom:15px; font-size:14px;">
+            <li><b>Business Strategy & Operations</b></li>
+            <li><b>Data Analytics & Business Intelligence</b></li>
+            <li><b>IT Governance, Risk & Compliance</b></li>
+            <li><b>Digital Transformation & Technology Strategy</b></li>
+        </ul>
+        """, unsafe_allow_html=True)
+        
         frameworks = ["SWOT Analysis", "Porter's Five Forces", "McKinsey 7S", "COBIT 2019", "DAMA-DMBOK", "ITIL 4", "TOGAF Architecture", "Digital Maturity Model"]
         for fw in frameworks:
             st.markdown(f'<span class="framework-badge">✓ {fw}</span>', unsafe_allow_html=True)
 
     with col_right:
+        # 3. EXECUTIVE COMMITTEE ARCHITECTURE
         st.markdown("### 👥 Executive Committee Architecture")
         st.markdown("""
         <div class="agent-card-standby" style="border-top:3px solid #58A6FF; padding:12px; margin-bottom:10px;"><b>👔 CEO Agent (Corporate Strategy Partner)</b></div>
@@ -111,8 +163,22 @@ if not st.session_state.simulation_active:
         """, unsafe_allow_html=True)
 
     st.divider()
+    
+    # 4. TARGET DELIVERABLES & OFFICIAL ACKNOWLEDGEMENTS
     st.markdown("### 📋 Target Deliverables Matrix")
     st.write("Output Generated: Summary Verdict, Root Cause Analysis, Risk Matrix, Maturity Scorecard, Tech Gap, 90-Day Roadmap, ROI Calculation.")
+
+    # INTEGRASI HALAMAN DEPAN: OFFICIAL ACKNOWLEDGEMENTS CARD
+    st.markdown("""
+    <div class="ack-card">
+        <h4 style="color: #8B949E !important; margin-top:0; font-size:15px; font-weight:600;">🤝 Acknowledgements & Open-Source Foundations</h4>
+        <p style="font-size:13px; color:#8B949E; line-height:1.5; margin-bottom:0;">
+            NexAtlas AI is proudly built upon the open-source <b>MiroFish framework</b> developed by the <b>MiroFish Team</b> and supported by <b>Shanda Group</b>. 
+            We sincerely appreciate the contributions of the MiroFish Team and the <b>CAMEL-AI team</b> for advancing open-source multi-agent simulation technology 
+            and enabling the next generation of enterprise digital twin solutions.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
     # --- ACTIVE WORKSPACE: MULTI-MODE ADVISORY LAYOUT ---
@@ -163,7 +229,7 @@ else:
 
         st.divider()
 
-        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP (REBRANDING PILL BADGES PREMIUM)
+        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP
         st.markdown("### 🚀 90-Day Transformation Roadmap")
         col_rd1, col_rd2, col_rd3 = st.columns(3)
         with col_rd1:
@@ -274,7 +340,7 @@ else:
         st.session_state.simulation_active = False
         st.rerun()
 
-# --- FOOTER METADATA & ACKNOWLEDGEMENTS ---
+# --- GLOBAL EXPANDER FOOTER (SINKRON DI KEDUA MODE) ---
 st.write(" ")
 st.write(" ")
 with st.expander("ℹ️ About NexAtlas AI & Strategic Methodology"):
