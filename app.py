@@ -30,6 +30,14 @@ st.markdown("""
     
     .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 2px; }
     .conflict-tag { color: #FF7B72; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+    
+    /* Executive Phase Milestones Styling */
+    .milestone-card { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; height: 100%; }
+    .badge-done { background-color: #1F241F; color: #56D364; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #238636; }
+    .badge-process { background-color: #2D2619; color: #D4BB6C; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #7E6C38; }
+    .badge-pending { background-color: #21262D; color: #8B949E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #30363D; }
+    
+    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -45,7 +53,7 @@ st.sidebar.header("⚙️ Simulation Settings")
 uploaded_file = st.sidebar.file_uploader("Upload Diagnostic Dataset (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
 
 st.sidebar.subheader("Configure Engine")
-disc_rounds = st.sidebar.slider("Number of Discussion Rounds", min_value=5, max_value=50, value=30)
+disc_rounds = st.sidebar.slider("Number of Discussion Rounds", min_value=5, max_value=50, value=34)
 risk_tolerance = st.sidebar.select_slider("Risk Tolerance Threshold", options=["Conservative", "Medium", "Aggressive"], value="Medium")
 decision_horizon = st.sidebar.selectbox("Decision Horizon", ["3 Months", "6 Months", "12 Months", "24 Months"], index=2)
 confidence_threshold = st.sidebar.slider("AI Confidence Guardrail (%)", min_value=70, max_value=98, value=90)
@@ -119,25 +127,27 @@ else:
     # ==========================================
     if "Executive Mode" in view_mode:
         
-        # FIX: Menggabungkan seluruh struktur konten ke dalam SATU blok HTML utuh untuk menghapus kotak kosong gaib
+        # FIX PERMANEN: Menghapus total sisa karakter markdown kaku, diganti full tag HTML terisolasi penuh
         st.markdown("""
         <div class="verdict-box">
-            <h3 style="color: #58A6FF !important; margin-top:0;">🧠 NexAtlas Executive Verdict</h3>
-            <p><b>Strategic Diagnosis:</b><br>
-            Penurunan pendapatan <b>15% pada PT Maju Bersama Indonesia</b> didorong oleh tiga kegagalan struktural yang saling bertumpu:</p>
-            <ul>
-                <li>Metodologi pengukuran KPI visualisasi yang menyesatkan, menyembunyikan <b>31% data asimetris</b> di lapangan.</li>
-                <li>Latensi sinkronisasi data operasional hulu-hilir sebesar <b>14 hari</b> (<i>Batch Processing</i> usang).</li>
-                <li>Beban <i>inventory holding cost</i> gudang regional membengkak akibat peramalan produksi yang buta dari realitas pasar.</li>
+            <h3 style="color: #58A6FF !important; margin-top:0; font-size:22px; font-weight:600;">🧠 NexAtlas Executive Verdict</h3>
+            <p style="margin-top:15px; color:#C9D1D9;"><b>Strategic Diagnosis:</b><br>
+            Penurunan pendapatan 15% pada PT Maju Bersama Indonesia didorong oleh tiga kegagalan struktural yang saling bertumpu:</p>
+            <ul style="color:#C9D1D9; margin-left:20px; padding-left:5px;">
+                <li style="margin-bottom:8px;">Metodologi pengukuran KPI visualisasi yang menyesatkan, menyembunyikan <b>31% data asimetris</b> di lapangan.</li>
+                <li style="margin-bottom:8px;">Latensi sinkronisasi data operasional hulu-hilir sebesar <b>14 hari</b> (<i>Batch Processing</i> usang).</li>
+                <li style="margin-bottom:8px;">Beban <i>inventory holding cost</i> gudang regional membengkak akibat peramalan produksi yang buta dari realitas pasar.</li>
             </ul>
-            <p><b>Recommended Actions:</b></p>
-            <ol>
-                <li><b>Koreksi Metrik Dasar:</b> Ganti metrik proyeksi rencana lahan menjadi kalkulasi murni berbasis <b>Total Actual Ground Coverage</b>.</li>
-                <li><b>Modernisasi Arsitektur:</b> Migrasikan jalur data logistik menuju pipa <i>streaming architecture</i> (Kafka) secara instan.</li>
-                <li><b>Deploy Forecasting Model:</b> Integrasikan analitik prediktif berbasis pemodelan <b>Hybrid LSTM</b> untuk mengunci efisiensi gudang.</li>
+            <p style="color:#C9D1D9; margin-top:20px;"><b>Recommended Actions:</b></p>
+            <ol style="color:#C9D1D9; margin-left:20px; padding-left:5px;">
+                <li style="margin-bottom:8px;"><b>Koreksi Metrik Dasar:</b> Ganti metrik proyeksi rencana lahan menjadi kalkulasi murni berbasis <b>Total Actual Ground Coverage</b>.</li>
+                <li style="margin-bottom:8px;"><b>Modernisasi Arsitektur:</b> Migrasikan jalur data logistik menuju pipa <i>streaming architecture</i> (Kafka) secara instan.</li>
+                <li style="margin-bottom:8px;"><b>Deploy Forecasting Model:</b> Integrasikan analitik prediktif berbasis pemodelan <b>Hybrid LSTM</b> untuk mengunci efisiensi gudang.</li>
             </ol>
-            <p style="margin-bottom:0;"><b>Expected Impact & Return:</b><br>
-            🎯 <b>+35%</b> Data Ground Accuracy | ⚡ <b>-90%</b> Decision Latency | 💰 <b>Estimated ROI:</b> 18 Months</p>
+            <p style="margin-top:20px; margin-bottom:0; color:#C9D1D9; border-top: 1px solid #30363D; padding-top:15px;">
+                <b>Expected Impact & Return:</b><br>
+                🎯 <span style="color:#56D364;"><b>+35%</b> Data Ground Accuracy</span> | ⚡ <span style="color:#58A6FF;"><b>-90%</b> Decision Latency</span> | 💰 <span style="color:#D4BB6C;"><b>Estimated ROI:</b> 18 Months</span>
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -153,18 +163,42 @@ else:
 
         st.divider()
 
-        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP
+        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP (REBRANDING MATRIKS KARTU CORPORATE)
         st.markdown("### 🚀 90-Day Transformation Roadmap")
         col_rd1, col_rd2, col_rd3 = st.columns(3)
         with col_rd1:
-            st.markdown("##### **Month 1: Data Standardization**")
-            st.markdown("* [x] Koreksi aturan visualisasi berbasis *Actual Coverage*.\n* [x] Standardisasi input enumerator lapangan.")
+            st.markdown("""
+            <div class="milestone-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span style="font-weight:bold; color:#58A6FF;">Month 1: Data Alignment</span>
+                    <span class="badge-done">COMPLETED</span>
+                </div>
+                <p style="font-size:13px; margin:5px 0;">✓ Koreksi aturan visualisasi murni berbasis <b>Actual Coverage</b> lapangan.</p>
+                <p style="font-size:13px; margin:5px 0;">✓ Standardisasi template input enumerator lapangan.</p>
+            </div>
+            """, unsafe_allow_html=True)
         with col_rd2:
-            st.markdown("##### **Month 2: Infrastructure Overhaul**")
-            st.markdown("* [ ] Migrasi database ke Cloud Hybrid Storage.\n* [ ] Bangun automated executive reporting engine.")
+            st.markdown("""
+            <div class="milestone-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span style="font-weight:bold; color:#D4BB6C;">Month 2: Infrastructure</span>
+                    <span class="badge-process">IN PROGRESS</span>
+                </div>
+                <p style="font-size:13px; margin:5px 0;">• Migrasi repository data logistik menuju Cloud Hybrid Storage.</p>
+                <p style="font-size:13px; margin:5px 0;">• Konstruksi automated executive reporting architecture.</p>
+            </div>
+            """, unsafe_allow_html=True)
         with col_rd3:
-            st.markdown("##### **Month 3: Intelligent Automation**")
-            st.markdown("* [ ] Deploy real-time Kafka Pipeline integration.\n* [ ] Aktivasi forecasting engine via **Hybrid LSTM**.")
+            st.markdown("""
+            <div class="milestone-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span style="font-weight:bold; color:#8B949E;">Month 3: Intelligent AI</span>
+                    <span class="badge-pending">SCHEDULED</span>
+                </div>
+                <p style="font-size:13px; margin:5px 0;">• Deploy pipeline streaming real-time via Apache Kafka.</p>
+                <p style="font-size:13px; margin:5px 0;">• Aktivasi time-series forecasting engine via <b>Hybrid LSTM</b>.</p>
+            </div>
+            """, unsafe_allow_html=True)
 
         st.divider()
 
@@ -230,6 +264,7 @@ else:
 
         st.divider()
 
+        # 3. DATA & IT ASSESSMENT MATRIX
         st.markdown("### 📊 Data & IT Capability Assessment")
         col_g1, col_g2 = st.columns(2)
         with col_g1:
