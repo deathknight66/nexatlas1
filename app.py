@@ -25,7 +25,9 @@ st.markdown("""
     .agent-bubble-premium { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; margin-bottom: 15px; }
     
     .profile-card { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; height: 100%; }
-    .framework-badge { display: inline-block; background-color: #21262D; color: #58A6FF; padding: 4px 10px; border-radius: 4px; border: 1px solid #30363D; font-size: 12px; font-weight: bold; margin: 3px; }
+    
+    /* Perbaikan CSS Badge: Ditambahkan margin-right & bottom agar spasi horizontal rapi */
+    .framework-badge { display: inline-block; background-color: #21262D; color: #58A6FF; padding: 5px 12px; border-radius: 4px; border: 1px solid #30363D; font-size: 12px; font-weight: bold; margin-right: 6px; margin-bottom: 8px; }
     .evidence-badge { background-color: #21262D; color: #8B949E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-family: monospace; }
     
     /* Executive Phase Milestones Modern Premium Styling */
@@ -45,7 +47,6 @@ st.markdown("""
     
     .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 2px; }
     .conflict-tag { color: #FF7B72; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -136,10 +137,10 @@ if not st.session_state.simulation_active:
         </div>
         """, unsafe_allow_html=True)
 
-        # 2. CORE ADVISORY DOMAINS & FRAMEWORKS
+        # 2. FIX PERMANEN: BUNDLING BADGE FRAMEWORK DALAM SATU STRING HTML AGAR MENYEBAR HORIZONTAL
         st.markdown("### 🚀 Core Advisory Domains & Frameworks")
         st.markdown("""
-        <ul style="color:#C9D1D9; margin-left:15px; margin-bottom:15px; font-size:14px;">
+        <ul style="color:#C9D1D9; margin-left:15px; margin-bottom:20px; font-size:14px; line-height:1.6;">
             <li><b>Business Strategy & Operations</b></li>
             <li><b>Data Analytics & Business Intelligence</b></li>
             <li><b>IT Governance, Risk & Compliance</b></li>
@@ -147,9 +148,10 @@ if not st.session_state.simulation_active:
         </ul>
         """, unsafe_allow_html=True)
         
+        # Penggabungan elemen array menjadi bungkusan horizontal (Anti Baris Memanjang)
         frameworks = ["SWOT Analysis", "Porter's Five Forces", "McKinsey 7S", "COBIT 2019", "DAMA-DMBOK", "ITIL 4", "TOGAF Architecture", "Digital Maturity Model"]
-        for fw in frameworks:
-            st.markdown(f'<span class="framework-badge">✓ {fw}</span>', unsafe_allow_html=True)
+        fw_html = "".join([f'<span class="framework-badge">✓ {fw}</span>' for fw in frameworks])
+        st.markdown(f'<div style="margin-top: 5px; line-height: 1.8;">{fw_html}</div>', unsafe_allow_html=True)
 
     with col_right:
         # 3. EXECUTIVE COMMITTEE ARCHITECTURE
@@ -168,7 +170,6 @@ if not st.session_state.simulation_active:
     st.markdown("### 📋 Target Deliverables Matrix")
     st.write("Output Generated: Summary Verdict, Root Cause Analysis, Risk Matrix, Maturity Scorecard, Tech Gap, 90-Day Roadmap, ROI Calculation.")
 
-    # INTEGRASI HALAMAN DEPAN: OFFICIAL ACKNOWLEDGEMENTS CARD
     st.markdown("""
     <div class="ack-card">
         <h4 style="color: #8B949E !important; margin-top:0; font-size:15px; font-weight:600;">🤝 Acknowledgements & Open-Source Foundations</h4>
@@ -340,7 +341,7 @@ else:
         st.session_state.simulation_active = False
         st.rerun()
 
-# --- GLOBAL EXPANDER FOOTER (SINKRON DI KEDUA MODE) ---
+# --- GLOBAL EXPANDER FOOTER ---
 st.write(" ")
 st.write(" ")
 with st.expander("ℹ️ About NexAtlas AI & Strategic Methodology"):
