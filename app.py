@@ -273,3 +273,23 @@ else:
     if st.button("↩ Exit Strategy Room & Reconfigure Settings"):
         st.session_state.simulation_active = False
         st.rerun()
+
+# --- FOOTER METADATA & ACKNOWLEDGEMENTS ---
+st.write(" ")
+st.write(" ")
+with st.expander("ℹ️ About NexAtlas AI & Strategic Methodology"):
+    st.markdown("""
+    NexAtlas AI is an AI-powered enterprise digital twin and advisory platform built upon the MiroFish architecture. 
+    It transforms a general-purpose social simulation engine into a corporate intelligence ecosystem where autonomous 
+    AI agents collaborate to analyze complex organizational environments.
+    
+    **Core Advisory Domains Covered:**
+    * Business Strategy & Operations
+    * Data Analytics & Business Intelligence
+    * IT Governance, Risk & Compliance
+    * Digital Transformation & Technology Strategy
+    
+    **Acknowledgements:**
+    NexAtlas AI is built upon the open-source MiroFish framework developed by the **MiroFish Team** and supported by **Shanda Group**. 
+    We sincerely appreciate the contributions of the MiroFish Team and the **CAMEL-AI team** for advancing open-source multi-agent simulation technology.
+    """)
