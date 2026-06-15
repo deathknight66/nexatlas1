@@ -28,15 +28,16 @@ st.markdown("""
     .framework-badge { display: inline-block; background-color: #21262D; color: #58A6FF; padding: 4px 10px; border-radius: 4px; border: 1px solid #30363D; font-size: 12px; font-weight: bold; margin: 3px; }
     .evidence-badge { background-color: #21262D; color: #8B949E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-family: monospace; }
     
-    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 2px; }
+    /* Executive Phase Milestones Modern Premium Styling (Anti-Kotak-Jelek) */
+    .milestone-card { background-color: #161B22; padding: 25px; border-radius: 10px; border: 1px solid #21262D; height: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .status-pill { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+    
+    .badge-done { background-color: rgba(46, 160, 67, 0.15); color: #3fb950; border: 1px solid rgba(46, 160, 67, 0.3); }
+    .badge-process { background-color: rgba(212, 187, 108, 0.15); color: #d4bb6c; border: 1px solid rgba(212, 187, 108, 0.3); }
+    .badge-pending { background-color: rgba(139, 148, 158, 0.15); color: #8b949e; border: 1px solid rgba(139, 148, 158, 0.3); }
+    
+    .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     .conflict-tag { color: #FF7B72; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-    
-    /* Executive Phase Milestones Styling */
-    .milestone-card { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; height: 100%; }
-    .badge-done { background-color: #1F241F; color: #56D364; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #238636; }
-    .badge-process { background-color: #2D2619; color: #D4BB6C; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #7E6C38; }
-    .badge-pending { background-color: #21262D; color: #8B949E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #30363D; }
-    
     .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
     </style>
 """, unsafe_allow_html=True)
@@ -127,7 +128,6 @@ else:
     # ==========================================
     if "Executive Mode" in view_mode:
         
-        # FIX PERMANEN: Menghapus total sisa karakter markdown kaku, diganti full tag HTML terisolasi penuh
         st.markdown("""
         <div class="verdict-box">
             <h3 style="color: #58A6FF !important; margin-top:0; font-size:22px; font-weight:600;">🧠 NexAtlas Executive Verdict</h3>
@@ -163,40 +163,34 @@ else:
 
         st.divider()
 
-        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP (REBRANDING MATRIKS KARTU CORPORATE)
+        # 3. 30-60-90 DAYS TRANSFORMATION ROADMAP (REBRANDING PILL BADGES PREMIUM)
         st.markdown("### 🚀 90-Day Transformation Roadmap")
         col_rd1, col_rd2, col_rd3 = st.columns(3)
         with col_rd1:
             st.markdown("""
             <div class="milestone-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="font-weight:bold; color:#58A6FF;">Month 1: Data Alignment</span>
-                    <span class="badge-done">COMPLETED</span>
-                </div>
-                <p style="font-size:13px; margin:5px 0;">✓ Koreksi aturan visualisasi murni berbasis <b>Actual Coverage</b> lapangan.</p>
-                <p style="font-size:13px; margin:5px 0;">✓ Standardisasi template input enumerator lapangan.</p>
+                <div><span class="status-pill badge-done">COMPLETED</span></div>
+                <h4 style="margin: 0 0 10px 0; font-size:16px;">Month 1: Data Alignment</h4>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">✓ Koreksi aturan visualisasi murni berbasis <b>Actual Coverage</b> lapangan.</p>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">✓ Standardisasi template input enumerator lapangan.</p>
             </div>
             """, unsafe_allow_html=True)
         with col_rd2:
             st.markdown("""
             <div class="milestone-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="font-weight:bold; color:#D4BB6C;">Month 2: Infrastructure</span>
-                    <span class="badge-process">IN PROGRESS</span>
-                </div>
-                <p style="font-size:13px; margin:5px 0;">• Migrasi repository data logistik menuju Cloud Hybrid Storage.</p>
-                <p style="font-size:13px; margin:5px 0;">• Konstruksi automated executive reporting architecture.</p>
+                <div><span class="status-pill badge-process">IN PROGRESS</span></div>
+                <h4 style="margin: 0 0 10px 0; font-size:16px;">Month 2: Infrastructure</h4>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">• Migrasi repository data logistik menuju Cloud Hybrid Storage.</p>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">• Konstruksi automated executive reporting architecture.</p>
             </div>
             """, unsafe_allow_html=True)
         with col_rd3:
             st.markdown("""
             <div class="milestone-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="font-weight:bold; color:#8B949E;">Month 3: Intelligent AI</span>
-                    <span class="badge-pending">SCHEDULED</span>
-                </div>
-                <p style="font-size:13px; margin:5px 0;">• Deploy pipeline streaming real-time via Apache Kafka.</p>
-                <p style="font-size:13px; margin:5px 0;">• Aktivasi time-series forecasting engine via <b>Hybrid LSTM</b>.</p>
+                <div><span class="status-pill badge-pending">SCHEDULED</span></div>
+                <h4 style="margin: 0 0 10px 0; font-size:16px;">Month 3: Intelligent AI</h4>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">• Deploy pipeline streaming real-time via Apache Kafka.</p>
+                <p style="font-size:13px; margin:5px 0; color:#C9D1D9;">• Aktivasi time-series forecasting engine via <b>Hybrid LSTM</b>.</p>
             </div>
             """, unsafe_allow_html=True)
 
