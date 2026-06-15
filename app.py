@@ -81,69 +81,80 @@ if initiate_sim or uploaded_file is not None or len(st.session_state.chat_histor
             time.sleep(1.5)
             query_lower = user_query.lower()
             
-            # --- CONTEXT DETECTION (PT MAJU BERSAMA / REVENUE CRISIS) ---
-            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower or ("maju bersama" in scenario.lower())
+            # --- DETEKSI SKENARIO SENTIMEN / VIRAL / JALAN RUSAK / DATA SOSIAL ---
+            is_sentiment_query = "sentimen" in query_lower or "viral" in query_lower or "sosial" in query_lower or "jalan" in query_lower or "komplain" in query_lower or "masyarakat" in query_lower
+            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower
             
-            if is_maju_bersama_context:
+            if is_sentiment_query:
+                # CEO Agent
+                st.session_state.chat_history.append({
+                    "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
+                    "content": """Sentimen publik yang Anda unggah dalam file CSV tersebut adalah **leading indicator atas risiko operasional makro**. Di era digitalisasi ini, jika narasi viral mengenai isu sosial, pembangunan macet, atau infrastruktur jalan rusak di daerah operasional (seperti koridor Lampung) menyentuh angka sentimen negatif di atas 70%, itu bukan sekadar riak kecil di media sosial.
+
+Itu adalah alarm keras bahwa legitimasi operasional kita terancam. Ketika persepsi publik hancur, koordinasi regulasi dengan birokrasi lokal akan otomatis mengeras dan biayanya sangat mahal."""
+                })
                 
-                # JIKA USER MENANYAKAN "DASARNYA APA?" / "KENAPA?"
+                # CFO Agent
+                st.session_state.chat_history.append({
+                    "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
+                    "content": """Saya melihat korelasi finansial langsung dari grafik sentimen negatif ini. Ambil contoh isu konkret: keluhan masif tentang infrastruktur jalan rusak. Keluhan publik ini bertransformasi menjadi **real financial drag** pada neraca kas kita. 
+
+Kendaraan logistik kita mengalami depresiasi aset 20% lebih cepat, konsumsi bahan bakar membengkak, dan *delivery time variance* naik tak terkendali. Sentimen negatif adalah cerminan langsung dari inefisiensi biaya operasional riil yang belum tercatat di sistem akuntansi internal Anda."""
+                })
+                
+                # Senior Data Analyst
+                st.session_state.chat_history.append({
+                    "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
+                    "content": """Analisis teks (*Text Analytics*) pada dataset `combine (1).csv` mengonfirmasi adanya polarisasi kluster keluhan yang sangat pekat. Masalahnya, sistem monitoring Anda saat ini buta terhadap data tidak terstruktur (*unstructured data*) seperti ini. 
+
+Jika laporan performa internal mengklaim target infrastruktur beres 90%, sementara *public sentiment registry* mencatat keluhan 80% negatif, artinya terjadi **validasi asimetris**. Metrik internal Anda tidak membumi. Kita wajib mengintegrasikan indeks kepuasan riil ini ke dalam penentuan prioritas alokasi coverage lahan."""
+                })
+                
+                # CTO & Pipeline Engineer
+                st.session_state.chat_history.append({
+                    "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
+                    "content": """Untuk menangkap pergerakan sentimen yang dinamis ini, mengandalkan unggahan file CSV manual seperti ini sangat tidak efisien. Kita butuh solusi automasi di level hulu.
+
+Rekomendasi arsitektur saya: Kita harus mendeploy sebuah **NLP Ingestion Pipeline** menggunakan model bahasa lokal yang dituning (seperti IndoBERT/RoBERTa) untuk mem-parsing dialek dan slang lokal secara akurat. Pipeline ini harus dikaitkan langsung ke **Kafka Event Broker** yang sudah kita bahas, sehingga setiap ada lonjakan komplain viral di lapangan, sistem kecerdasan **Hybrid LSTM** kita bisa langsung menyesuaikan prediksi risiko distribusi logistik secara *near real-time* (< 5 detik)."""
+                })
+                
+                # Consensus Summary
+                st.session_state.chat_history.append({
+                    "role": "assistant", "avatar": "🎯", "name": "🎯 NexAtlas Strategic Consensus Verdict",
+                    "content": """
+### 📋 Public Sentiment Crisis Mitigation Matrix
+
+| Parameter Krisis | Analisis Akar Masalah (AI Core) | Solusi Arsitektur | Target Pemulihan |
+| :--- | :--- | :--- | :--- |
+| **Volatilitas Isu Sosial** | Sentimen negatif bertindak sebagai penanda disrupsi distribusi fisik lapangan. | Integrasi *Public Sentiment Index* ke Decision Dashboard. | Minggu 1 |
+| **Infrastruktur Defisit** | Keluhan jalan rusak berkolerasi dengan lonjakan biaya perawatan armada logistik. | Audit rute alternatif menggunakan *geo-spatial tracking*. | Minggu 2-3 |
+| **Automasi Data** | Pemrosesan file data keluhan masih bersifat manual (*batch CSV*). | Implementasi *Streaming NLP Telemetry Pipeline* berbasis Kafka. | Bulan 1 |
+""", "divider": True
+                })
+
+            # --- CONTEXT DETEKSI MAJU BERSAMA ---
+            elif is_maju_bersama_context:
                 if "dasar" in query_lower or "kenapa" in query_lower or "why" in query_lower or "alasan" in query_lower:
                     st.session_state.chat_history.append({
                         "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
-                        "content": """Dasar empirisnya sangat kokoh: audit internal Digital Twin kami menemukan adanya **diskrepansi fatal sebesar 31%** pada sektor komoditas sekunder. Laporan Power BI bulanan manajemen mencatat efisiensi 100% karena dihitung dari *Rencana Target Lahan* (data di atas kertas). 
-
-Namun, jangkauan riil (*Actual Coverage*) di lapangan hanya menyentuh **69%**. Selisih 31% data gaib inilah yang membuat estimasi suplai kita buta dan memicu penumpukan *overhead* gudang yang memakan pendapatan."""
+                        "content": """Dasar empirisnya sangat kokoh: audit internal Digital Twin kami menemukan adanya **diskrepansi fatal sebesar 31%** pada sektor komoditas sekunder. Jangkauan riil (*Actual Coverage*) di lapangan hanya menyentuh **69%**, sementara target di atas kertas diklaim sempurna. Selisih data gaib inilah pemicunya."""
                     })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
-                        "content": """Menambahkan dari kacamata arsitektur teknis, dasarnya adalah **data stagnation**. Delay 14 hari dalam sinkronisasi SQL database berarti keputusan taktis manajemen hari ini didasarkan pada kondisi logistik dua minggu lalu. Berjalan di pasar volatil dengan data kedaluwarsa adalah alasan utama mengapa kebocoran Rp 1.2 Miliar ini terjadi tanpa terdeteksi sistem pemantauan lama Anda."""
-                    })
-                
-                # JIKA USER MENANYAKAN "STRATEGI AWALNYA APA?" / "SOLUSI?"
                 elif "strategi" in query_lower or "solusi" in query_lower or "langkah" in query_lower or "awal" in query_lower:
                     st.session_state.chat_history.append({
                         "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
-                        "content": """Strategi awal PT Maju Bersama terlalu berfokus pada **agresivitas ekspansi hilir** tanpa memperkuat fundamen *Data Supply Chain* di hulu. Manajemen memacu tim penjualan untuk mengejar omset, namun rantai input data kuantitatif dari enumerator lapangan dibiarkan manual dan lamban. Strategi awal yang buta koordinasi inilah yang menciptakan *blind spot* operasional."""
+                        "content": """Strategi awal PT Maju Bersama terlalu berfokus pada agresivitas ekspansi hilir tanpa memperkuat fundamen *Data Supply Chain* di hulu. Langkah pemulihan instan kita adalah mengalihkan anggaran modal kerja untuk menerapkan **Skenario B (Kafka Pipeline + Hybrid LSTM)** guna menyelamatkan margin laba sebesar **Rp 950 Juta**."""
                     })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
-                        "content": """Benar, strategi spekulatif itu harus segera kita akhiri. Langkah pemulihan instan kita adalah mematikan sistem pelaporan *batch* kuno dan mengalihkan anggaran modal kerja untuk menerapkan **Skenario B (Kafka Pipeline + Hybrid LSTM)**. Mitigasi risiko ini diproyeksikan langsung menyelamatkan margin laba sebesar **Rp 950 Juta pada kuartal depan**."""
-                    })
-                
-                # RESPONS DEFAULT MULTI-AGENT JIKA PERTANYAAN PERTAMA KALI ATAU UMUM
                 else:
                     st.session_state.chat_history.append({
                         "role": "assistant", "avatar": "👔", "name": "👔 CEO Agent (Senior Corporate Advisor)",
-                        "content": """Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** adalah krisis eksekusi struktural. Kita terlalu lambat merespons anomali pasar karena tata kelola informasi kita menderita kelumpuhan keputusan akibat data birokrasi pelaporan yang usang."""
+                        "content": """Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** adalah krisis eksekusi struktural akibat data birokrasi pelaporan yang usang."""
                     })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "💰", "name": "💰 CFO Agent (Veteran Risk & Financial Allocator)",
-                        "content": """Kebocoran ini setara dengan **kerugian finansial Rp 1.2 Miliar/tahun**. Kita memproduksi barang berdasarkan target rencana, padahal permintaan pasar meleset jauh. Ini inefisiensi modal kerja yang sangat fatal."""
-                    })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "📊", "name": "📊 Senior Data Analyst (Principal Decision Intelligence)",
-                        "content": """Biang keroknya ada pada bias rumus visualisasi dashboard lama Anda yang menghitung performa dari *Rencana Target Lahan*. Lapangan mencatat jangkauan aktual (*Actual Coverage*) komoditas drop ke **69%**. Balik rumus kalkulasinya ke basis jangkauan riil sekarang juga!"""
-                    })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "🏗", "name": "🏗️ CTO & Pipeline Architect (Enterprise Tech Fellow)",
-                        "content": """Latensi sinkronisasi data 14 hari adalah pemicunya. Solusi mutlak: ganti pipa data lama dengan **Event Broker berbasis Apache Kafka** terintegrasi arsitektur **Cloud Hybrid** untuk menyuplai model forecasting **Hybrid LSTM** secara real-time (< 5 detik)."""
-                    })
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "🎯", "name": "🎯 NexAtlas Strategic Consensus Verdict",
-                        "content": """
-### 🏛️ Executive Transformation Blueprint (Big 4 Advisory Standard)
-
-| Pilar Strategis | Rekomendasi Taktis Intervensi Senior | Indikator Dampak Finansial | Target Ketat |
-| :--- | :--- | :--- | :--- |
-| **Metrik Analytics** | Koreksi total kalkulasi visualisasi; wajib berbasis **Total Actual Coverage**. | Menghilangkan bias prediksi manajemen | Minggu 1-2 |
-| **Data Engine** | Deploy arsitektur Cloud Hybrid & Event Broker (Kafka Pipeline). | Memangkas latensi data dari 14 hari ke < 5 detik | Bulan 1 |
-| **Decision AI** | Aktivasi pemodelan prediktif berbasis arsitektur **Hybrid LSTM / CNN-LSTM**. | Memitigasi operational loss & optimasi gudang | Bulan 2-3 |
-""", "divider": True
-                    })
+            
+            # --- DEFAULT FALLBACK ---
             else:
                 st.session_state.chat_history.append({
                     "role": "assistant", "avatar": "🏛️", "name": "NexAtlas Consensus", 
-                    "content": f"Pertanyaan mengenai '{user_query}' telah diproses. Seluruh jajaran direksi menyarankan untuk mengunci parameter kalkulasi operasional berdasarkan kondisi data aktual lapangan."
+                    "content": f"Pertanyaan mengenai '{user_query}' telah dievaluasi oleh dewan penasihat senior. Prinsip dasar kami: Jangan selesaikan masalah struktural dengan perbaikan kosmetik di hilir. Perbaiki tata kelola validasi data aktualnya terlebih dahulu."
                 })
         st.rerun()
 
