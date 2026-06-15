@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 
-# --- BRANDING & UI SETUP (ELITE EXECUTIVE SYSTEM) ---
+# --- BRANDING & UI SETUP (ELITE SYSTEM STYLING) ---
 st.set_page_config(
     page_title="NexAtlas AI | Decision Intelligence System",
     page_icon="🏛️",
@@ -10,211 +10,261 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Corporate CSS (Clean, Minimalist, No Clutter)
+# Custom High-End Theme Architecture (Glassmorphism & Crisp Typography)
 st.markdown("""
     <style>
     .main { background-color: #0B0E14; }
     header { background-color: rgba(0,0,0,0) !important; }
     
-    h1, h2, h3, h4 { color: #58A6FF !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica; font-weight: 600; }
-    p, span, label { color: #C9D1D9 !important; }
+    h1, h2, h3, h4, h5 { color: #58A6FF !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica; font-weight: 600; }
+    p, span, label, li { color: #C9D1D9 !important; }
     
     .hero-portal { background: linear-gradient(135deg, #161B22 0%, #0D1117 100%); padding: 40px; border-radius: 12px; border: 1px solid #30363D; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .verdict-box { background-color: #1A1F2C; padding: 30px; border-radius: 12px; border: 1px solid #388BFD; margin-bottom: 25px; }
     .consensus-box { background-color: #1F241F; padding: 20px; border-radius: 8px; border-left: 5px solid #238636; margin-top: 15px; }
     
-    .agent-card-standby { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #21262D; border-top: 3px solid #8B949E; text-align: left; margin-bottom: 15px; }
-    .agent-status-dot { height: 8px; width: 8px; background-color: #56D364; border-radius: 50%; display: inline-block; margin-right: 6px; }
-    .slogan-banner { background-color: #0D1117; padding: 15px 25px; border-radius: 8px; border-left: 4px solid #D4BB6C; margin: 20px 0; }
+    .profile-card { background-color: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; height: 100%; }
+    .framework-badge { display: inline-block; background-color: #21262D; color: #58A6FF; padding: 4px 10px; border-radius: 4px; border: 1px solid #30363D; font-size: 12px; font-weight: bold; margin: 3px; }
     
-    /* Perbaikan tampilan nama di atas chat agar rapi dan tidak terlalu besar */
     .chat-agent-name { font-size: 15px; font-weight: bold; color: #58A6FF; margin-bottom: 5px; }
+    .conflict-quote { border-left: 3px solid #FF7B72; padding-left: 10px; font-style: italic; color: #FF7B72; background-color: #25181C; padding: 10px; border-radius: 4px; margin: 10px 0; }
     </style>
 """, unsafe_allow_html=True)
 
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [
-        {"role": "system", "avatar": "🏛️", "name": "NexAtlas Core Engine", "content": "Executive Boardroom activated. Strategic data vaults loaded. Ready for predictive governance simulation."}
-    ]
+# Session State to lock simulation lifecycle
+if "simulation_active" not in st.session_state:
+    st.session_state.simulation_active = False
 
-# Header Utama Platform
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+# Title Banner
 st.title("🏛️ NexAtlas AI")
 st.markdown("<p style='font-size: 16px; color: #8B949E !important;'>Enterprise Digital Twin & Decision Intelligence Ecosystem</p>", unsafe_allow_html=True)
 st.divider()
 
-# --- SIDEBAR CONTROL CENTER (REBRANDING BAHASA KONSULTAN) ---
-st.sidebar.header("⚙️ Boardroom Configuration")
+# --- SIDEBAR EXECUTIVE CONTROL CENTER ---
+st.sidebar.header("⚙️ Simulation Settings")
 
-# Mengubah "Ingest Data" menjadi istilah korporat yang elegan
-st.sidebar.subheader("📥 Strategic Data Loading")
-uploaded_file = st.sidebar.file_uploader("Upload Diagnostic Dataset (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
+# Step 1: Document Upload
+st.sidebar.subheader("STEP 1: Upload Documents")
+uploaded_file = st.sidebar.file_uploader("Ingest Corporate Reports (PDF, CSV, TXT)", type=["pdf", "csv", "txt", "json"])
 
-if uploaded_file is not None:
-    st.sidebar.success(f"✅ Context Synced: {uploaded_file.name}")
-    file_status = f"Context Source: **{uploaded_file.name}**"
-else:
-    file_status = "Context Source: Regional Strategic Supply Chain Dataset."
+# Step 3: Engine Configuration (The MiroFish Knobs)
+st.sidebar.subheader("STEP 3: Configure Engine")
+disc_rounds = st.sidebar.slider("Number of Discussion Rounds", min_value=5, max_value=50, value=30)
+risk_tolerance = st.sidebar.select_slider("Risk Tolerance Threshold", options=["Conservative", "Medium", "Aggressive"], value="Medium")
+decision_horizon = st.sidebar.selectbox("Decision Horizon", ["3 Months", "6 Months", "12 Months", "24 Months"], index=2)
+confidence_threshold = st.sidebar.slider("AI Confidence Guardrail (%)", min_value=70, max_value=98, value=90)
 
-# Mengubah "Scenario Injection" menjadi rumusan agenda dewan direksi
-st.sidebar.subheader("🔮 Define Strategic Agenda")
-scenario = st.sidebar.text_area("Core Objective Narrative:", 
-    "Analyze why PT Maju Bersama Indonesia revenue declined 15% and simulate an executive boardroom session covering strategic positioning.")
+initiate_sim = st.sidebar.button("📊 Run Multi-Agent Simulation", use_container_width=True)
 
-initiate_sim = st.sidebar.button("Initiate Boardroom Simulation")
+if initiate_sim:
+    st.session_state.simulation_active = True
 
-# --- MAIN WORKSPACE LOGIC ---
-if initiate_sim or uploaded_file is not None or len(st.session_state.chat_history) > 1:
+# --- SCREEN CONTROLLER: LANDING PAGE VS SIMULATION ROOM ---
+if not st.session_state.simulation_active:
     
-    col_m1, col_m2, col_m3 = st.columns(3)
-    with col_m1:
-        st.metric(label="Strategic Health Score", value="68 / 100", delta="-14% Volatility Risk")
-    with col_m2:
-        st.metric(label="Enterprise Risk Index", value="🔴 CRITICAL ALERT", delta="Structural Leakage Detected")
-    with col_m3:
-        st.metric(label="Decision Latency Gap", value="14 Days Lag", delta="Action Required Instantly", delta_color="inverse")
-
-    st.divider()
-
-    st.markdown("### 💬 Live Multi-Agent Boardroom Debate & Simulation")
-    st.write("Jajaran Advisor Utama (25+ Tahun Pengalaman Industri) sedang membedah anomali sistem Anda:")
-
-    # Render Chat History (Pembersihan Render Avatar & Nama Agar Tidak Dobel/Typo)
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"], avatar=msg["avatar"]):
-            st.markdown(f"<div class='chat-agent-name'>{msg['name']}</div>", unsafe_allow_html=True)
-            st.write(msg["content"])
-            if "divider" in msg:
-                st.divider()
-
-    # Chat Input Box
-    if user_query := st.chat_input("Tantang analisis dewan direksi senior di sini..."):
-        # Mengubah identitas default dari "Executive (You)" menjadi "Senior Policy & Data Analyst"
-        st.session_state.chat_history.append({"role": "user", "avatar": "👤", "name": "Senior Policy & Data Analyst (You)", "content": user_query})
-        
-        with st.spinner("Jajaran Executive Partner sedang melakukan konvergensi strategi..."):
-            time.sleep(1.5)
-            query_lower = user_query.lower()
-            
-            is_sentiment_query = "sentimen" in query_lower or "viral" in query_lower or "sosial" in query_lower or "jalan" in query_lower or "komplain" in query_lower or "masyarakat" in query_lower
-            is_maju_bersama_context = "maju" in query_lower or "revenue" in query_lower or "decline" in query_lower or "turun" in query_lower or "dasar" in query_lower or "strategi" in query_lower or ("maju bersama" in scenario.lower())
-            
-            if is_sentiment_query:
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
-                    "content": """Sentimen publik yang Anda unggah dalam file CSV tersebut adalah **leading indicator atas risiko operasional makro**. Di era digitalisasi ini, jika narasi viral mengenai isu sosial, pembangunan macet, atau infrastruktur jalan rusak di daerah operasional (seperti koridor Lampung) menyentuh angka sentimen negatif di atas 70%, itu bukan sekadar riak kecil di media sosial.
-
-Itu adalah alarm keras bahwa legitimasi operasional kita terancam. Ketika persepsi publik hancur, koordinasi regulasi dengan birokrasi lokal akan otomatis mengeras dan biayanya sangat mahal."""
-                })
-                
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "💰", "name": "CFO Agent (Veteran Risk & Financial Allocator)",
-                    "content": """Saya melihat korelasi finansial langsung dari grafik sentimen negatif ini. Ambil contoh isu konkret: keluhan masif tentang infrastruktur jalan rusak. Keluhan publik ini bertransformasi menjadi *real financial drag* pada neraca kas kita. 
-
-Kendaraan logistik kita mengalami depresiasi aset 20% lebih cepat, konsumsi bahan bakar membengkak, dan *delivery time variance* naik tak terkendali. Sentimen negatif adalah cerminan langsung dari inefisiensi biaya operasional riil yang belum tercatat di sistem akuntansi internal Anda."""
-                })
-                
-                # Perbaikan Typo fatal "menointegasikan" -> "mengintegrasikan"
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "📊", "name": "Senior Data Analyst (Principal Decision Intelligence)",
-                    "content": """Analisis teks (*Text Analytics*) pada dataset mengonfirmasi adanya polarisasi kluster keluhan yang sangat pekat. Masalahnya, sistem monitoring Anda saat ini buta terhadap data tidak terstruktur (*unstructured data*) seperti ini. 
-
-Jika laporan performa internal mengklaim target infrastruktur beres 90%, sementara *public sentiment registry* mencatat keluhan 80% negatif, artinya terjadi validasi asimetris. Metrik internal Anda tidak membumi. Kita wajib **mengintegrasikan** indeks kepuasan riil ini ke dalam penentuan prioritas alokasi coverage lahan."""
-                })
-                
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🏗", "name": "CTO & Pipeline Architect (Enterprise Tech Fellow)",
-                    "content": """Untuk menangkap pergerakan sentimen yang dinamis ini, mengandalkan unggahan file CSV manual seperti ini sangat tidak efisien. Kita butuh solusi automasi di level hulu.
-
-Rekomendasi arsitektur saya: Kita harus mendeploy sebuah *Streaming NLP Telemetry Pipeline* menggunakan model bahasa lokal yang dituning (seperti IndoBERT/RoBERTa) untuk mem-parsing dialek dan slang lokal secara akurat. Pipeline ini harus dikaitkan langsung ke Kafka Event Broker, sehingga setiap ada lonjakan komplain viral di lapangan, sistem kecerdasan Hybrid LSTM kita bisa langsung menyesuaikan prediksi risiko distribusi logistik secara *near real-time* (< 5 detik)."""
-                })
-                
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🎯", "name": "NexAtlas Strategic Consensus Verdict",
-                    "content": """
-### 📋 Public Sentiment Crisis Mitigation Matrix
-
-| Parameter Krisis | Analisis Akar Masalah (AI Core) | Solusi Arsitektur | Target Pemulihan |
-| :--- | :--- | :--- | :--- |
-| **Volatilitas Isu Sosial** | Sentimen negatif bertindak sebagai penanda disrupsi distribusi fisik lapangan. | Integrasi *Public Sentiment Index* ke Decision Dashboard. | Minggu 1 |
-| **Infrastruktur Defisit** | Keluhan jalan rusak berkolerasi dengan lonjakan biaya perawatan armada logistik. | Audit rute alternatif menggunakan *geo-spatial tracking*. | Minggu 2-3 |
-| **Automasi Data** | Pemrosesan file data keluhan masih bersifat manual (*batch CSV*). | Implementasi *Streaming NLP Telemetry Pipeline* berbasis Kafka. | Bulan 1 |
-""", "divider": True
-                })
-
-            elif is_maju_bersama_context:
-                if "dasar" in query_lower or "kenapa" in query_lower or "why" in query_lower or "alasan" in query_lower:
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "📊", "name": "Senior Data Analyst (Principal Decision Intelligence)",
-                        "content": """Dasar empirisnya sangat kokoh: audit internal Digital Twin kami menemukan adanya **diskrepansi fatal sebesar 31%** pada sektor komoditas sekunder. Jangkauan riil (*Actual Coverage*) di lapangan hanya menyentuh **69%**, sementara target di atas kertas diklaim sempurna. Selisih data gaib inilah pemicunya."""
-                    })
-                elif "strategi" in query_lower or "solusi" in query_lower or "langkah" in query_lower or "awal" in query_lower:
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
-                        "content": """Strategi awal PT Maju Bersama terlalu berfokus pada agresivitas ekspansi hilir tanpa memperkuat fundamen *Data Supply Chain* di hulu. Langkah pemulihan instan kita adalah mengalihkan anggaran modal kerja untuk menerapkan **Skenario B (Kafka Pipeline + Hybrid LSTM)** guna menyelamatkan margin laba sebesar **Rp 950 Juta**."""
-                    })
-                else:
-                    st.session_state.chat_history.append({
-                        "role": "assistant", "avatar": "👔", "name": "CEO Agent (Senior Corporate Advisor)",
-                        "content": """Penurunan pendapatan **15% pada PT Maju Bersama Indonesia** adalah krisis eksekusi struktural akibat data birokrasi pelaporan yang usang."""
-                    })
-            else:
-                st.session_state.chat_history.append({
-                    "role": "assistant", "avatar": "🏛️", "name": "NexAtlas Consensus", 
-                    "content": f"Pertanyaan mengenai '{user_query}' telah dievaluasi oleh dewan penasihat senior. Prinsip dasar kami: Jangan selesaikan masalah struktural dengan perbaikan kosmetik di hilir. Perbaiki tata kelola validasi data aktualnya terlebih dahulu."
-                })
-        st.rerun()
-
-else:
-    # --- LANDING PAGE PORTAL ---
+    # --- ENTERPRISE HERO INTERFACE ---
     st.markdown("""
     <div class="hero-portal">
         <h2 style='margin-top:0;'>🏛️ NexAtlas Virtual Strategy Room</h2>
-        <p style='font-size:15px; color:#8B949E !important;'>
-            Selamat datang di ekosistem Digital Twin korporat. Sistem ini mengorkestrasi <b>Multi-Agent Network (1M Graph Nodes)</b> 
-            untuk menjalankan simulasi skenario taktis, pemetaan matriks risiko Big 4, serta pembongkaran bias metrik bisnis secara otonom.
-        </p>
-        <div class="slogan-banner">
-            <b style='color:#D4BB6C;'>The Decision Intelligence Core:</b><br>
-            <i style='color:#C9D1D9;'>\"Power BI tells you <b>what</b> happened. NexAtlas tells you <b>why</b> it happened, what the risks are, what needs to be done, and <b>what will happen</b> if decision A or B is taken.\"</i>
+        <div style="background-color: #0D1117; padding: 18px 25px; border-radius: 8px; border-left: 4px solid #D4BB6C; margin: 20px 0;">
+            <i style='color:#C9D1D9; font-size: 15px;'>\"Traditional dashboards explain what happened. NexAtlas simulates why it happened, evaluates risks, and recommends strategic actions based on AI executive deliberation.\"</i>
         </div>
-        <p style='font-size:14px; margin-bottom:0; color:#58A6FF !important;'>
-            💡 <b>Action Required:</b> Silakan lakukan pengunggahan berkas strategis di panel kiri atau tentukan agenda draf objektif Anda, lalu klik tombol <b>"Initiate Boardroom Simulation"</b>.
+        <p style='font-size:14px; margin-bottom:0; color:#8B949E !important;'>
+            Sistem orkestrasi dewan direksi virtual siap menganalisis dokumen strategis, menantang asumsi manajemen, dan memproyeksikan lintasan masa depan korporasi.
         </p>
     </div>
     """, unsafe_allow_html=True)
+
+    # --- TWO COLUMN PRE-FLIGHT SETUP ---
+    col_left, col_right = st.columns(2)
     
-    st.markdown("### 👥 Orchestration Nodes Status (Agents Standby)")
-    st.write("Jajaran penasihat ahli AI yang saat ini terpasang di dalam kluster simulasi Anda:")
+    with col_left:
+        # STEP 2: COMPANY DIGITAL TWIN PROFILE
+        st.markdown("### 🏢 STEP 2: Digital Twin Profile Context")
+        st.markdown("""
+        <div class="profile-card">
+            <table style="width:100%; border-collapse: collapse;">
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Enterprise Entity:</b></td><td>PT Maju Bersama Indonesia</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Industry Sector:</b></td><td>Agriculture & Supply Chain Network</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Annual Revenue Baseline:</b></td><td>Rp 2.4 Trillion</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Active Workforce:</b></td><td>5,200 Employees (Field & HQ)</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Current Crisis Vector:</b></td><td style="color:#FF7B72;">Revenue declined 15% in last 3 quarters</td></tr>
+                <tr><td style="color:#8B949E; padding:8px 0;"><b>Strategic Directive:</b></td><td style="color:#56D364;">Cost optimization & framework-driven modernization</td></tr>
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # STEP 4: GOVERNANCE & CONSULTING FRAMEWORKS
+        st.markdown("### 📐 STEP 4: Applied Frameworks Layer")
+        st.write("Metodologi tata kelola data dan konsultasi strategis Big 4 yang disuntikkan ke dalam agen:")
+        frameworks = ["SWOT Analysis", "Porter's Five Forces", "McKinsey 7S", "COBIT 2019", "DAMA-DMBOK", "ITIL 4", "TOGAF Architecture", "Digital Maturity Model"]
+        for fw in frameworks:
+            st.markdown(f'<span class="framework-badge">✓ {fw}</span>', unsafe_allow_html=True)
+
+    with col_right:
+        # STEP 3: MANUSIAWI EXECUTIVE BOARD MEMBERS
+        st.markdown("### 👥 Executive Committee Architecture")
+        st.write("Struktur dewan pakar virtual yang akan memperdebatkan data Anda:")
+        
+        st.markdown("""
+        <div class="agent-card-standby" style="border-top:3px solid #58A6FF; padding:12px; margin-bottom:10px;">
+            <span class="agent-status-dot"></span><b>👔 CEO Agent (Corporate Strategy Partner)</b><br>
+            <span style='font-size:12px; color:#8B949E;'>Focus: Macro alignment, market responsiveness, risk ownership.</span>
+        </div>
+        <div class="agent-card-standby" style="border-top:3px solid #D4BB6C; padding:12px; margin-bottom:10px;">
+            <span class="agent-status-dot"></span><b>💰 CFO Agent (Veteran Risk & Financial Allocator)</b><br>
+            <span style='font-size:12px; color:#8B949E;'>Focus: Working capital efficiency, inventory leakage mitigation, ROI boundaries.</span>
+        </div>
+        <div class="agent-card-standby" style="border-top:3px solid #56D364; padding:12px; margin-bottom:10px;">
+            <span class="agent-status-dot"></span><b>📊 CDO Agent (Chief Data Officer Partner)</b><br>
+            <span style='font-size:12px; color:#8B949E;'>Focus: DAMA-DMBOK standards, actual ground coverage metrics, algorithm auditing.</span>
+        </div>
+        <div class="agent-card-standby" style="border-top:3px solid #A371F7; padding:12px; margin-bottom:10px;">
+            <span class="agent-status-dot"></span><b>🖥️ CIO Agent (Technology Transformation Fellow)</b><br>
+            <span style='font-size:12px; color:#8B949E;'>Focus: Kafka pipeline streaming, hybrid data lakehouses, Hybrid LSTM architectures.</span>
+        </div>
+        <div class="agent-card-standby" style="border-top:3px solid #FF7B72; padding:12px; margin-bottom:10px;">
+            <span class="agent-status-dot"></span><b>🔐 IT Auditor Agent (Governance & Compliance Inspector)</b><br>
+            <span style='font-size:12px; color:#8B949E;'>Focus: COBIT 2019 compliance, data lineage validation, audit trail logs.</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
     
-    col_a1, col_a2, col_a3, col_a4 = st.columns(4)
-    with col_a1:
-        st.markdown("""
-        <div class="agent-card-standby">
-            <span class="agent-status-dot"></span><b>CEO Agent</b><br>
-            <span style='font-size:12px; color:#8B949E;'>Type: ENTJ (The Commander)</span><br>
-            <p style='font-size:13px; margin-top:5px;'>Fokus pada penyelarasan strategi makro, mitigasi krisis, dan akselerasi pertumbuhan pendapatan.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with col_a2:
-        st.markdown("""
-        <div class="agent-card-standby" style="border-top: 3px solid #D4BB6C;">
-            <span class="agent-status-dot"></span><b>CFO Agent</b><br>
-            <span style='font-size:12px; color:#8B949E;'>Type: ESTJ (The Executive)</span><br>
-            <p style='font-size:13px; margin-top:5px;'>Bertanggung jawab menghitung kebocoran modal, estimasi ROI investasi sistem, dan efisiensi logistik.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with col_a3:
-        st.markdown("""
-        <div class="agent-card-standby" style="border-top: 3px solid #58A6FF;">
-            <span class="agent-status-dot"></span><b>Senior Data Analyst</b><br>
-            <span style='font-size:12px; color:#8B949E;'>Type: INTJ (The Architect)</span><br>
-            <p style='font-size:13px; margin-top:5px;'>Spesialis validasi kuantitatif. Berfokus membedah bias data dari jangkauan aktual lapangan.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with col_a4:
-        st.markdown("""
-        <div class="agent-card-standby" style="border-top: 3px solid #A371F7;">
-            <span class="agent-status-dot"></span><b>CTO & Pipeline Engineer</b><br>
-            <span style='font-size:12px; color:#8B949E;'>Type: ISTJ (The Inspector)</span><br>
-            <p style='font-size:13px; margin-top:5px;'>Arsitek pipa data. Menangani skalabilitas cloud, arsitektur Kafka, dan deployment model Hybrid LSTM.</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # STEP 5: EXPECTED ADVISORY DELIVERABLES
+    st.markdown("### 📋 STEP 5: Target Deliverables Matrix")
+    st.write("Dokumen keluaran strategis yang akan dikonstruksikan secara otonom oleh simulasi engine:")
+    
+    col_d1, col_d2, col_d3, col_d4 = st.columns(4)
+    with col_d1:
+        st.markdown("✔ Executive Summary Verdict<br>✔ Root Cause Analysis", unsafe_allow_html=True)
+    with col_d2:
+        st.markdown("✔ Risk Assessment Matrix<br>✔ Data Maturity Scorecard", unsafe_allow_html=True)
+    with col_d3:
+        st.markdown("✔ Technology Gap Mapping<br>✔ 30-60-90 Day Roadmap", unsafe_allow_html=True)
+    with col_d4:
+        st.markdown("✔ What-If Simulation Engine<br>✔ Financial Impact Optimization", unsafe_allow_html=True)
+
+    st.info("💡 Konfigurasi komplit. Silakan sesuaikan parameter mesin di panel kontrol sebelah kiri, lalu tekan 'Run Multi-Agent Simulation' untuk memulai sidang otonom.")
+
+else:
+    # --- SIMULATION ACTIVE ROOM (THE FLAGSHIP PORTAL EXECUTED) ---
+    with st.spinner("🏛️ Orchestrating Live AI Boardroom Simulation... Executing Multi-Agent Dialogue Nodes..."):
+        time.sleep(1.5)
+        
+    # KPI Metrics Banner
+    col_m1, col_m2, col_m3 = st.columns(3)
+    with col_m1:
+        st.metric(label="Overall Strategic Health", value="68 / 100", delta="-14% Volatility Risk")
+    with col_m2:
+        st.metric(label="Business Risk Status", value="🔴 CRITICAL INTERNAL CRISIS", delta="Revenue Leakage Identified")
+    with col_m3:
+        st.metric(label="Simulation Guardrail Profile", value=f"Rounds: {disc_rounds} | Conf: {confidence_threshold}%", delta=f"Horizon: {decision_horizon}")
+
+    st.divider()
+
+    # --- 1. THE ADVANCED EXECUTIVE VERDICT ---
+    st.markdown('<div class="verdict-box">', unsafe_allow_html=True)
+    st.subheader("═════════════════════════════")
+    st.subheader("NexAtlas Executive Verdict")
+    st.subheader("═════════════════════════════")
+    st.markdown(f"""
+    **Context:** Active Digital Twin Framework deployed for **PT Maju Bersama Indonesia** against a 15% revenue drop.
+    
+    **Primary Issues Decoded via Applied Governance Frameworks:**
+    * 🔴 **Methodological Error (DAMA-DMBOK Deficit):** Performance reporting still measures KPI execution against obsolete *planned targets*, hiding a **31% actual data gap** in regional supply chain coverage.
+    * ⏳ **Infrastructure Deficit (TOGAF/ITIL Latency):** Core transaction layers suffer a **14-day synchronization lag**, leaving the CEO with stale intelligence.
+    * ⚠️ **Financial Drain (SWOT Risk Vector):** Working capital is heavily trapped in inventory overhead due to speculative production forecasting unlinked to field reality.
+
+    **AI Core Consensus Recommendation:**
+    > Restructure all reporting to measure strictly against **Total Actual Ground Coverage**. Authorize immediate deployment of an Event-Driven Streaming Pipeline (Kafka) to feed real-time analytics to a **Hybrid LSTM Forecasting model** within 90 days.
+    """)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- 2. MULTI-AGENT DEBATE ROOM (THE FIERCE CONFLICT & RESOLUTION) ---
+    st.markdown("### 🧠 Live Multi-Agent Boardroom Transcripts")
+    st.write("Saksikan perdebatan tajam antar jajaran direksi virtual (Aksi Saling Sanggah Menuju Konsensus):")
+    
+    # Render the fierce boardroom debate where agents clash
+    with st.chat_message("assistant", avatar="👔"):
+        st.markdown("<div class='chat-agent-name'>CEO Agent (Corporate Strategy Partner)</div>", unsafe_allow_html=True)
+        st.write("""Penurunan pendapatan 15% ini adalah bukti kegagalan eksekusi makro. Tim penjualan beralasan pasar bergejolak, tapi Digital Twin mendeteksi kita buta arah di level hulu rantai pasok. Saya butuh transparansi data sekarang juga.""")
+        
+    with st.chat_message("assistant", avatar="💰"):
+        st.markdown("<div class='chat-agent-name'>CFO Agent (Veteran Risk & Financial Allocator)</div>", unsafe_allow_html=True)
+        st.write("""Saya harus memotong intervensi CEO. Akar kebocorannya ada pada **financial drain sebesar Rp 1.2 Miliar per tahun** akibat pembengkakan *inventory cost* di gudang regional. Kita membuang modal kerja untuk memproduksi barang berdasarkan target imajiner rencana lahan birokrasi, bukan serapan pasar.""")
+        
+    with st.chat_message("assistant", avatar="📊"):
+        st.markdown("<div class='chat-agent-name'>CDO Agent (Chief Data Officer Partner)</div>", unsafe_allow_html=True)
+        st.markdown("""<div class='conflict-quote'><b>CDO Menyanggah CFO:</b> "Tunggu CFO, jangan menyalahkan proyeksi produksi sebelum Anda mengoreksi metodologi pengukuran dasarnya!"</div>""", unsafe_allow_html=True)
+        st.write("""Berdasarkan audit standar **DAMA-DMBOK**, dashboard Power BI lama manajemen mengukur rasio performa dari rencana target lahan sehingga angkanya selalu tampak 100% aman. Faktanya, **Total Actual Ground Coverage kita drop hingga 69%**. Manajemen disidang menggunakan ilusi optik data! Rumus wajib kita balik total.""")
+
+    with st.chat_message("assistant", avatar="🖥️"):
+        st.markdown("<div class='chat-agent-name'>CIO Agent (Technology Transformation Fellow)</div>", unsafe_allow_html=True)
+        st.markdown("""<div class='conflict-quote'><b>CIO Menyanggah CDO & CFO:</b> "Anda berdua menuntut pembalikan rumus, tapi mengabaikan fakta bahwa infrastruktur database SQL kita saat ini sedang sekarat!"</div>""", unsafe_allow_html=True)
+        st.write("""Bagaimana CDO bisa mendapatkan data aktual jika kita menderita **latensi sinkronisasi data selama 14 hari**? Database kita memakai sistem *batch processing* kuno! Saya tidak akan mengizinkan tim data science mendeploy model peramalan **Hybrid LSTM** apa pun sebelum kita merombak pipa arsitektur ke **Cloud Hybrid** menggunakan **Streaming Event Broker berbasis Apache Kafka**. Kita harus memotong delay data dari 14 hari langsung ke di bawah 5 detik!""")
+
+    with st.chat_message("assistant", avatar="🔐"):
+        st.markdown("<div class='chat-agent-name'>IT Auditor Agent (Governance & Compliance Inspector)</div>", unsafe_allow_html=True)
+        st.write("""Saya menengahi debat teknis ini. Berdasarkan kerangka **COBIT 2019**, kepatuhan integrasi data kita berada di ambang batas kritis: **65% (Level 3 - Defined)**. Usulan CIO untuk memigrasikan pipeline ke Kafka sangat krusial untuk menciptakan *Single Source of Truth* otomatis dan memitigasi risiko manipulasi entri manual di lapangan.""")
+
+    with st.chat_message("assistant", avatar="🏛️"):
+        st.markdown("<div class='chat-agent-name'>🎯 NexAtlas Core Consensus Verdict</div>", unsafe_allow_html=True)
+        st.markdown("""Dewan direksi виртуал menyepakati resolusi terpadu: CFO mengunci anggaran Rp 450 Juta untuk restrukturisasi teknologi, CIO mengomandani migrasi Kafka Pipeline, CDO merombak formula visualisasi berbasis jangkauan aktual lapangan, untuk menyuplai data latensi rendah ke sistem prediksi otonom.""")
+
+    st.divider()
+
+    # --- 3. BIG 4 FRAMEWORK ASSESSMENT GRID ---
+    col_g1, col_g2 = st.columns(2)
+    with col_g1:
+        st.markdown("### 📊 Data Maturity Scorecard (DAMA-DMBOK Audit)")
+        st.code("""
+Data Quality        █████████░ 85%
+Data Integration    ███████░░░ 72%
+Governance          ██████░░░░ 65%
+Analytics           ████████░░ 80%
+AI Readiness        ███████░░░ 74%
+        """, language="text")
+        st.markdown("**Overall Maturity Rating:** `Level 3 - Defined` (Proses terstandardisasi seluruh organisasi).")
+    
+    with col_g2:
+        st.markdown("### 🛡️ Risk Assessment Matrix (COBIT 2019 Mapping)")
+        st.markdown('<div style="background-color:#2D191E; padding:12px; border-radius:6px; border-left:4px solid #FF7B72; color:#FF7B72; margin-bottom:10px;"><b>🔴 High Risk:</b> Data synchronization lag > 7 days (Triggers systemic warehouse errors)</div>', unsafe_allow_html=True)
+        st.markdown('<div style="background-color:#2D2619; padding:12px; border-radius:6px; border-left:4px solid #D4BB6C; color:#D4BB6C; margin-bottom:10px;"><b>🟡 Medium Risk:</b> Incomplete coverage patterns for secondary agricultural crops (Ubi Kayu at 69%)</div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # --- 4. ROADMAP & WHAT-IF INTERACTIVE ENGINE ---
+    st.markdown("### 🔮 Predictive What-If Interactive Engine")
+    st.write("Simulasikan opsi intervensi kebijakan taktis Anda berdasarkan pemodelan dewan eksekutif virtual:")
+    
+    selected_option = st.radio(
+        "Select Boardroom Intervention Scenario:",
+        ("Scenario Alpha: Restructure field audit workforce (+20% operational alignment)", 
+         "Scenario Beta: Approve CIO's Kafka Pipeline + Hybrid LSTM Core Architecture Integration")
+)
+
+    if st.button("Initiate Predictive Simulation Run"):
+        with st.spinner("Re-calculating multi-agent graph future matrices..."):
+            time.sleep(1.2)
+        if "Scenario Alpha" in selected_option:
+            st.info("""**🔮 Digital Twin Future Projection (Scenario Alpha):**
+            * Field validation coverage reaches **95% within two quarters**.
+            * Operational cost inflates by **12%** due to workforce expansion.
+            * Strategic latency remains trapped at **7 days** due to lack of a real-time event broker architecture.""")
+        else:
+            st.success("""**🔮 Digital Twin Future Projection (Scenario Beta):**
+            * Operational latency completely eliminated **(Data lag slashed from 14 days to < 5 seconds)**.
+            * Automated integration mitigates human data reporting entry risks by **91%**.
+            * **Financial Impact Potential:** Saves up to **Rp 950 Million / year** in warehouse overhead liquidation.""")
+
+    st.divider()
+    
+    # Back to Config Boardroom CTA
+    if st.button("↩ Exit Strategy Room & Reconfigure Boardroom Settings"):
+        st.session_state.simulation_active = False
+        st.session_state.chat_history = []
+        st.rerun()
