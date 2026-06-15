@@ -13,7 +13,6 @@ from oasis import ActionType, LLMAction, ManualAction, generate_reddit_agent_gra
 
 # --- CORE INTEGRATION: RUN OASIS SIMULATION ---
 async def run_oasis_simulation(scenario_prompt, db_path):
-    # 1. Inisialisasi Model LLM
     openai_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O_MINI,
@@ -26,9 +25,9 @@ async def run_oasis_simulation(scenario_prompt, db_path):
         ActionType.DO_NOTHING,
     ]
 
-    # Menggunakan profil Data Analyst sebagai basis Graph Agen
+    # Menggunakan file gabungan dewan pakar boardroom_users.json
     agent_graph = await generate_reddit_agent_graph(
-        profile_path="./data/nexatlas/data_analyst.json",
+        profile_path="./data/nexatlas/boardroom_users.json",
         model=openai_model,
         available_actions=available_actions,
     )
@@ -44,7 +43,7 @@ async def run_oasis_simulation(scenario_prompt, db_path):
 
     await env.reset()
 
-    # Inject Skenario dari Input UI Streamlit sebagai Post Pertama (CEO Brief)
+    # Inject Skenario ke Boardroom Agent
     actions_round_1 = {}
     actions_round_1[env.agent_graph.get_agent(0)] = [
         ManualAction(action_type=ActionType.CREATE_POST,
@@ -52,7 +51,7 @@ async def run_oasis_simulation(scenario_prompt, db_path):
     ]
     await env.step(actions_round_1)
 
-    # Putaran Diskusi Agen (LLM berpikir dan saling menanggapi)
+    # Putaran Diskusi Agen (Semua pakar membaca dan saling menanggapi)
     actions_round_2 = {
         agent: LLMAction()
         for _, agent in env.agent_graph.get_agents()
@@ -88,12 +87,10 @@ scenario = st.sidebar.text_area("Input Strategic Scenario:",
 db_path = "./data/nexatlas_simulation.db"
 
 if st.sidebar.button("Initiate Scenario"):
-    # Pastikan API Key tersedia
     if not os.environ.get("OPENAI_API_KEY"):
         st.error("Error: OPENAI_API_KEY belum di-set di environment terminal kamu!")
     else:
         with st.spinner("🏛️ NexAtlas Engine: Waking up Corporate Agents & orchestrating boardroom debate..."):
-            # Menjalankan fungsi async OASIS di dalam Streamlit
             asyncio.run(run_oasis_simulation(scenario, db_path))
         
         st.success("Consensus Reached! Strategic Assessment Generated Successfully.")
@@ -134,11 +131,9 @@ if st.sidebar.button("Initiate Scenario"):
         # --- DYNAMIC OUTPUT FROM DATABASE ---
         st.markdown("### 📋 Boardroom Transcript (Live Agent Discussion)")
         
-        # Membaca log perdebatan asli yang disimpan oleh OASIS ke SQLite
         if os.path.exists(db_path):
             try:
                 conn = sqlite3.connect(db_path)
-                # Sesuaikan query dengan skema tabel database bawaan dari fork OASIS kamu
                 df_posts = pd.read_sql_query("SELECT content FROM posts", conn)
                 df_comments = pd.read_sql_query("SELECT content FROM comments", conn)
                 conn.close()
